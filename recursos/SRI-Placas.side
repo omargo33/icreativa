@@ -1,0 +1,85 @@
+{
+  "id": "83546396-f6f4-4c7e-ae0c-e9df87e04265",
+  "version": "2.0",
+  "name": "SRI-Placas",
+  "url": "https://srienlinea.sri.gob.ec",
+  "tests": [{
+    "id": "53bb2f48-523e-408f-a9a9-bcea43467bf2",
+    "name": "Placa-Test",
+    "commands": [{
+      "id": "bf5ea8b1-e684-4190-88cf-2eb7082bf294",
+      "comment": "",
+      "command": "open",
+      "target": "/sri-en-linea/SriVehiculosWeb/ConsultaValoresPagarVehiculo/Consultas/consultaRubros",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "1ff3efc6-3f37-4bfe-a864-b65ef9584d61",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1600x862",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "20f8173f-6de1-47b7-aaa6-2d817fcbb8bc",
+      "comment": "",
+      "command": "click",
+      "target": "id=busqueda",
+      "targets": [
+        ["id=busqueda", "id"],
+        ["name=busqueda", "name"],
+        ["css=#busqueda", "css:finder"],
+        ["xpath=//input[@id='busqueda']", "xpath:attributes"],
+        ["xpath=//body[@id='sribody']/sri-root/div/div[2]/div/div/sri-consulta-valores-pagar-web-app/div/sri-rutas-matriculacion/div[3]/div/div[2]/div/div/div[3]/sri-busqueda-matricula/form/div/div/div/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[2]/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "75b5aa0b-8d80-4354-a352-490edba8b4fa",
+      "comment": "",
+      "command": "type",
+      "target": "id=busqueda",
+      "targets": [
+        ["id=busqueda", "id"],
+        ["name=busqueda", "name"],
+        ["css=#busqueda", "css:finder"],
+        ["xpath=//input[@id='busqueda']", "xpath:attributes"],
+        ["xpath=//body[@id='sribody']/sri-root/div/div[2]/div/div/sri-consulta-valores-pagar-web-app/div/sri-rutas-matriculacion/div[3]/div/div[2]/div/div/div[3]/sri-busqueda-matricula/form/div/div/div/div[2]/input", "xpath:idRelative"],
+        ["xpath=//div[2]/input", "xpath:position"]
+      ],
+      "value": "I0104611"
+    }, {
+      "id": "6877b288-9a4a-4cae-a834-1b9c3b73945f",
+      "comment": "",
+      "command": "click",
+      "target": "css=.cyan-btn > .ui-button-text",
+      "targets": [
+        ["css=.cyan-btn > .ui-button-text", "css:finder"],
+        ["xpath=//body[@id='sribody']/sri-root/div/div[2]/div/div/sri-consulta-valores-pagar-web-app/div/sri-rutas-matriculacion/div[3]/div/div[2]/div/div/div[3]/div[3]/button/span", "xpath:idRelative"],
+        ["xpath=//div[3]/div[3]/button/span", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "e6dca576-43fe-49f5-8d9d-6fbc8632ae5e",
+      "comment": "",
+      "command": "click",
+      "target": "css=.tamano-placa",
+      "targets": [
+        ["css=.tamano-placa", "css:finder"],
+        ["xpath=//body[@id='sribody']/sri-root/div/div[2]/div/div/sri-consulta-valores-pagar-web-app/div/sri-rutas-matriculacion/div[3]/div/div/sri-muestra-datos-vehiculo/div/div/div[3]", "xpath:idRelative"],
+        ["xpath=//sri-muestra-datos-vehiculo/div/div/div[3]", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "516e78db-ecc2-4b6b-9dae-f376f3f0503f",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["53bb2f48-523e-408f-a9a9-bcea43467bf2"]
+  }],
+  "urls": ["https://srienlinea.sri.gob.ec/"],
+  "plugins": []
+}
