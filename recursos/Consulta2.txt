@@ -1,0 +1,29 @@
+url	https://srienlinea.sri.gob.ec/sri-matriculacion-vehicular-recaudacion-servicio-internet/rest/BaseVehiculo/existePorNumeroPlaca?numeroPlaca=PHQ0990
+originUrl	https://srienlinea.sri.gob.ec/sri-en-linea/SriVehiculosWeb/ConsultaValoresPagarVehiculo/Consultas/consultaRubros#error=login_required&state=939136d6-f7eb-460e-8c72-9945b1cc807e
+documentUrl	https://srienlinea.sri.gob.ec/sri-en-linea/SriVehiculosWeb/ConsultaValoresPagarVehiculo/Consultas/consultaRubros#error=login_required&state=939136d6-f7eb-460e-8c72-9945b1cc807e
+method	GET
+incognito	false
+thirdParty	false
+cookieStoreId	firefox-default
+urlClassification	firstParty: [], thirdParty: []
+requestSize	0
+responseSize	0
+Accept	application/json, text/plain, */*
+Accept-Encoding	gzip, deflate, br
+Accept-Language	es-ES,es;q=0.8,en-US;q=0.5,en;q=0.3
+Cache-Control	no-cache, no-store, must-revalidate
+Connection	keep-alive
+Content-Type	application/json; charset=utf-8
+Expires	Sat, 01 Jan 2000 00:00:00 GMT
+Host	srienlinea.sri.gob.ec
+If-Modified-Since	0
+Pragma	no-cache
+Referer	https://srienlinea.sri.gob.ec/sri-en-linea/SriVehiculosWeb/ConsultaValoresPagarVehiculo/Consultas/consultaRubros
+Sec-Fetch-Dest	empty
+Sec-Fetch-Mode	cors
+Sec-Fetch-Site	same-origin
+User-Agent	Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/115.0
+Cookies (sorted by symbols, Aa-Zz)
+BIGipServerDecla_Sesion	354287882.47873.0000
+BIGipServerIntegra_statics	236847370.20480.0000
+TS01ed1cee	0115ac86d25c11cb3aa6c37ade00e883a89da83220852a4c8ecf461829a6a3cf50b58be62c2c49744d5c5531ca077fe7a44e8b8128c9009b83d21f51d8a5e29ff84033a3f5a0e33c05bec9e5893231835b5814b627

@@ -1,0 +1,6 @@
+/java/ramv/docker/data
+/java/ramv/target
+/java/ramv/.mvn
+/java/ramv/.vscode
+/recursos/chromeDrivers/
+recursos/.~*.*
