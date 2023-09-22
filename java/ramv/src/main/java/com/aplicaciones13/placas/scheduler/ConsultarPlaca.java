@@ -19,17 +19,22 @@ public class ConsultarPlaca {
     @Autowired
     private ConsultarPlacaServicio consultarPlacaServicio;
 
-    //@Scheduled(cron = "0 0/30 * * * 0-6", zone = "GMT-5")
+    @Scheduled(cron = "0 0/30 * * * 0-6", zone = "GMT-5")
     public void ejecutarREST() {
         consultarPlacaServicio.consultarPlacasEncontradas("C");
     }
 
-    //@Scheduled(cron = "0 0/50 * * * *", zone = "GMT-5")
+    /**
+     * Metodo para consultar las placas encontradas en la base de datos.
+     * 
+     * Cada 45 minutos, de 8am a 7pm, de lunes a sabado.
+     */
+    @Scheduled(cron = "0 */45 8-19 * * MON-SAT", zone = "GMT-5")
     public void ejecutarWeb() {
         consultarPlacaServicio.consultarPlacasEncontradas("E");
     }    
 
-    //@Scheduled(cron = "0 0/90 * * * *", zone = "GMT-5")
+    @Scheduled(cron = "0 0/90 * * * *", zone = "GMT-5")
     public void ejecutarMail() {
         consultarPlacaServicio.consultarPlacasEncontradas("M");
     }

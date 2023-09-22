@@ -41,11 +41,16 @@ public class ConsumoWebCliente {
   private String userAgent = "Mozilla/5.0 (Linux; Android 10; CPH2239) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Mobile Safari/537.36";
   private String chromeDriver= "/home/ovelez/Documentos/clientes/iCreativa/java/placas/src/main/resources/chromedriver";
 
-  public static void main(String[] args) {
+  /**
+   * Metodo para crear el objeto. 
+   * 
+   * Para ejecuar el proceso String[] args
+   */
+  public void ejecutarTest() {
     ConsumoWebCliente consumoWebCliente = new ConsumoWebCliente();    
     boolean estado = consumoWebCliente.ejecutar();
-    System.out.println("Estado: " + estado);
-    System.out.println("Respuesta: " + consumoWebCliente.getRespuesta());
+    log.info("Estado: {}", estado);
+    log.info("Respuesta: {}", consumoWebCliente.getRespuesta());
   }
 
   /**
@@ -94,7 +99,7 @@ public class ConsumoWebCliente {
     ChromeOptions options = new ChromeOptions();
     options.addArguments(listaOpciones);
     options.setPageLoadStrategy(PageLoadStrategy.NORMAL);
-    //options.setHeadless(true);
+    options.setHeadless(true);
 
     driver = new ChromeDriver(options);
     driver.manage().window().setSize(new Dimension(1600, 862));
@@ -169,7 +174,7 @@ public class ConsumoWebCliente {
       WebElement sriMatricula = wait
           .until(ExpectedConditions.presenceOfElementLocated(By.tagName("sri-rutas-matriculacion")));
       respuesta = sriMatricula.getText();
-      if (respuesta.indexOf("Marca") > 0){
+      if (respuesta.indexOf("Marca") >= 0){
         estado = true;
       }else{
         respuesta = "No se encontro la Marca";

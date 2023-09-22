@@ -3,7 +3,6 @@ package com.aplicaciones13.placas.cliente;
 import java.io.IOException;
 
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import com.aplicaciones13.placas.cliente.estructura.Respuesta;
@@ -27,7 +26,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ConsumoPlaca extends SolicitaRESTURL {
 
-   // private String contexto = "";
     private String placa = "";
     private String contexto = "";
     private Respuesta respuesta = new Respuesta();
@@ -56,12 +54,11 @@ public class ConsumoPlaca extends SolicitaRESTURL {
      * Metodo para sobrecargar la conexion.
      *
      * @return
-     * @throws MalformedURLException
      * @throws IOException
      */
     @Override
-    public HttpURLConnection generarConexion() throws MalformedURLException, IOException {
-        URL url = new URL(getURLConsulta());
+    public HttpURLConnection generarConexion() throws  IOException {
+        URL url = new URL(getUrlConsulta());
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
         connection.setRequestProperty("Content-Type", "application/json");
@@ -75,30 +72,30 @@ public class ConsumoPlaca extends SolicitaRESTURL {
      * @return
      */
     private boolean ejecutar() {
-        setJSONConsulta(null);
-        setURLConsulta(getContexto() + this.placa);
+        setJsonConsulta(null);
+        setUrlConsulta(getContexto() + this.placa);
 
         try {
             ejecutarConsultaWebService();
         } catch (Exception e) {
             log.error("No se pudo ejecutar el consumo por: {} {} {} {}",
                 e.getMessage(),
-                getHTTPEstado(),
+                getHttpEstado(),
                 getErrorRespuesta(),
-                getJSONRespuesta()
+                getJsonRespuesta()
                 );
             
         }
 
-        if (getHTTPEstado() == 200) {
-            return isRespuestaOrdenCompra(getJSONRespuesta());
+        if (getHttpEstado() == 200) {
+            return isRespuestaOrdenCompra(getJsonRespuesta());
         }
 
-        if (getHTTPEstado() == 204) {
+        if (getHttpEstado() == 204) {
             return false;
         }
 
-        log.warn("El consumo tiene el siguiente estado: {}", getHTTPEstado());
+        log.warn("El consumo tiene el siguiente estado: {}", getHttpEstado());
         return false;
     }
 

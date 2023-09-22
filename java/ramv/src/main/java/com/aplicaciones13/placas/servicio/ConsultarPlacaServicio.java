@@ -15,6 +15,7 @@ import com.aplicaciones13.placas.cliente.EnviarCorreo;
 import com.aplicaciones13.placas.jpa.model.Parametro;
 import com.aplicaciones13.placas.jpa.model.Placa;
 import com.aplicaciones13.placas.jpa.model.UserAgent;
+import com.aplicaciones13.placas.jpa.model.WebClient;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +25,8 @@ import lombok.extern.slf4j.Slf4j;
  * 
  * @author omargo33@gmail.com
  * @version 2023-08-20
+ * 
+ * @see para descargar webdriver de chrome en: https://chromedriver.chromium.org/downloads
  * 
  */
 @Service
@@ -46,6 +49,9 @@ public class ConsultarPlacaServicio {
 
     @Autowired
     UserAgentServicio userAgentServicio;
+
+    @Autowired
+    WebClientServicio webClientServicio;
 
     /**
      * Metodo para consultar las placas encontradas en la base de datos.
@@ -82,23 +88,23 @@ public class ConsultarPlacaServicio {
      * 
      * Listas las placas pendientes de envio de correos.
      * Y se envia el correo.
-     * Si todo sale correcto se actualiza el estado de la placa a F.
+     * Si sale correcto se actualiza el estado de la placa a F.
      * Caso contrario se crea un evento de placa con el error con FB.
      * 
      * @param listaPlacas
      */
     private void consumirMail(List<Placa> listaPlacas) {
-        Parametro parametro = parametroServicio.findByIdParametros(7);
+        Parametro parametro = parametroServicio.findByIdParametros(6);
         enviarCorreo.setPropiedades(parametro.getTexto1() + " " + parametro.getTexto2());
 
         for (Placa placa : listaPlacas) {
             String novedadPlaca = placaEventoServicio.findByIdPlacaAndEstadoM(placa.getIdPlacas()).getDescripcion();
 
             enviarCorreo.setCorreo(placa.getClienteCorreo());
-            enviarCorreo.setAsunto("Placa " + placa.getPlaca());
+            enviarCorreo.setAsunto("Placa " + placa.getRamvPlaca());
             enviarCorreo.setCuerpo(
                     "Estimad@ " + placa.getClienteNombre() + "\n\n" +
-                            "Su placa " + placa.getPlaca() + " tiene la siguietne novedad " + novedadPlaca + "\n\n" +
+                            "Su placa " + placa.getRamvPlaca() + " tiene la siguietne novedad " + novedadPlaca + "\n\n" +
                             "Atentamente\n");
             placaServicio.actualizarEstado(placa.getIdPlacas(), "F");
 
@@ -117,25 +123,32 @@ public class ConsultarPlacaServicio {
      * Parametros del sistema.
      * 
      * Listas las placas pendientes de trabajo.
+     * 
+     * Y se busca el web client para el consumo.
+     * 
      * Y se consume el proceso selenium.
-     * Si todo sale correcto se actualiza el estado de la placa a M.
+     * Si sale correcto se actualiza el estado de la placa a M.
      * Caso contrario se crea un evento de placa con el error con P.
      * 
      * @param listaPlacas
      */
     private void consumirPlacaWeb(List<Placa> listaPlacas) {
-        List<Integer> listaIdParametros = List.of(4, 5, 6);
+        List<Integer> listaIdParametros = List.of(4, 5);
         Map<Integer, Parametro> mapParametros = parametroServicio.findByIdParametrosIn(listaIdParametros);
 
         Duration timeout = Duration.ofSeconds(mapParametros.get(5).getValor1().intValue());
         consumoWebCliente.setTimeout(timeout);
         consumoWebCliente.setUrlSRI(mapParametros.get(4).getTexto1());
-        consumoWebCliente.setChromeDriver(mapParametros.get(6).getTexto1());
+        
 
         for (Placa placa : listaPlacas) {
             UserAgent userAgent = userAgentServicio.buscarDescripcionRandom();
             consumoWebCliente.setUserAgent(userAgent.getDescripcion());
-            consumoWebCliente.setPlaca(placa.getPlaca());
+            consumoWebCliente.setPlaca(placa.getRamvPlaca());
+
+            WebClient webClient = webClientServicio.findByIdWebClient(userAgent.getIdWebClient());
+
+            consumoWebCliente.setChromeDriver(webClient.getPath());
 
             if (consumoWebCliente.ejecutar()) {
                 placaServicio.actualizarEstado(placa.getIdPlacas(), "M");
@@ -155,7 +168,7 @@ public class ConsultarPlacaServicio {
      * 
      * Listas las placas pendientes de trabajo.
      * Y se consume el servicio.
-     * Si todo sale correcto se actualiza el estado de la placa a E.
+     * Si sale correcto se actualiza el estado de la placa a E.
      * Caso contrario se crea un evento de placa con el error con P.
      * 
      * @param listaPlacas
@@ -170,7 +183,7 @@ public class ConsultarPlacaServicio {
         consumoPlaca.setClaveCertificado(mapParametros.get(2).getTexto2());
 
         for (Placa placa : listaPlacas) {
-            consumoPlaca.setPlaca(placa.getPlaca());
+            consumoPlaca.setPlaca(placa.getRamvPlaca());
 
             if (consumoPlaca.load(timeOut)) {
                 placaServicio.actualizarEstado(placa.getIdPlacas(), "E");

@@ -2,6 +2,13 @@ package com.aplicaciones13.placas;
 
 public class ConstantesPlacas {
 
+    /**
+     * Constructor privado para evitar instancias
+     */
+    private ConstantesPlacas() {
+        super();
+    }
+
     public static final String PLACA_EVENTO_CREAR = "C";
     public static final String PLACA_EVENTO_REINGRESO = "R";
     public static final String PLACA_EVENTO_PROCESAR = "P";

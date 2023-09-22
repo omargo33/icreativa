@@ -46,7 +46,7 @@ public class ParametroServicio {
      */
     public Map<Integer,Parametro> findByIdParametrosIn(List<Integer> idParametros) {
         
-        Map <Integer,Parametro> mapParametros = new HashMap();
+        Map <Integer,Parametro> mapParametros = new HashMap<>();
 
         List<Parametro> listaParametros = parametroRepositorio.findByIdParametrosIn(idParametros);
 

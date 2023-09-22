@@ -2,5 +2,5 @@
 /java/ramv/target
 /java/ramv/.mvn
 /java/ramv/.vscode
-/recursos/chromedriver
+/recursos/chromeDrivers/
 recursos/.~*.*

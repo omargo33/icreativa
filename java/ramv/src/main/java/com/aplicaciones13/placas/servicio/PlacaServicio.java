@@ -56,7 +56,7 @@ public class PlacaServicio {
      * @param valor 
      */
     public Placa crearPlaca(Placa valor) {
-        Placa placa = placaRepositorio.findByPlaca(valor.getPlaca());
+        Placa placa = placaRepositorio.findByPlaca(valor.getRamvPlaca());
 
         if (placa != null) {
             placaEventoServicio.crearPlacaEvento(placa.getIdPlacas(),

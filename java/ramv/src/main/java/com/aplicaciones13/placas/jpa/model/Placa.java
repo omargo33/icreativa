@@ -46,7 +46,7 @@ public class Placa implements Serializable {
 
     @NotBlank
     @Column(name = "placa", length = 32)
-    private String placa;
+    private String ramvPlaca;
 
     @NotBlank
     @Column(name = "cliente", length = 16)

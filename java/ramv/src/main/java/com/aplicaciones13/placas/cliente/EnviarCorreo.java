@@ -5,12 +5,11 @@ import com.sun.mail.util.MailSSLSocketFactory;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-
+ 
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
-import java.io.UnsupportedEncodingException;
-
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -58,6 +57,7 @@ import javax.mail.internet.MimeMultipart;
 public class EnviarCorreo {
     private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
+
     private boolean accesoSSL;
     private boolean instaciaServidorAplicacion;
 
@@ -95,7 +95,7 @@ public class EnviarCorreo {
         this.clave = "";
         this.userName = "";
         this.asunto = "";
-        this.correo = "";        
+        this.correo = "";
         this.cuerpo = "";
         this.descripcionEstado = "";
         this.fechaInicio = new Date();
@@ -143,7 +143,7 @@ public class EnviarCorreo {
      * @throws MessagingException
      * @throws IOException
      */
-    private void enviarMail() throws AddressException, MessagingException, IOException, Exception {
+    private void enviarMail() throws AddressException, MessagingException, Exception {
         Authenticator autentificacion = new SMTPAuthenticator();
 
         if (accesoSSL) {
@@ -168,34 +168,41 @@ public class EnviarCorreo {
         message.setSubject(this.asunto);
         message.setContent(this.cuerpo, "text/html; charset=utf-8");
 
-        if (this.adjuntos.size() > 0) {
-            MimeMultipart multipart = new MimeMultipart();
-
-            BodyPart htmlPart = new MimeBodyPart();
-            htmlPart.setContent(this.cuerpo, "text/html; charset=utf-8");
-
-            if (this.adjuntos.size() > 0) {
-                validaAdjuntos();
-                for (String a : this.adjuntos) {
-                    if (a != null) {
-                        try {
-                            MimeBodyPart messageBodyPart = new MimeBodyPart();
-                            messageBodyPart.attachFile(a);
-                            messageBodyPart.setFileName(messageBodyPart.getFileName());
-                            multipart.addBodyPart(messageBodyPart);
-                        } catch (IOException | MessagingException e) {
-                            this.adjuntosRespuesta.add(a + " " + e.toString());
-                            log.error("enviarMail() - add attachment {}", e.toString());
-                        }
-                    }
-                }
-            }
-
-            multipart.addBodyPart(htmlPart);
-            message.setContent(multipart);
+        if (!this.adjuntos.isEmpty()) {
+            message.setContent(crearAdjungos());
         }
 
         Transport.send(message);
+    }
+
+    /**
+     * Metodo para crear los adjuntos.
+     *
+     * @return
+     */
+    private MimeMultipart crearAdjungos() throws MessagingException {
+        MimeMultipart multipart = new MimeMultipart();
+
+        BodyPart htmlPart = new MimeBodyPart();
+        htmlPart.setContent(this.cuerpo, "text/html; charset=utf-8");
+
+        validaAdjuntos();
+        for (String a : this.adjuntos) {
+            if (a != null) {
+                try {
+                    MimeBodyPart messageBodyPart = new MimeBodyPart();
+                    messageBodyPart.attachFile(a);
+                    messageBodyPart.setFileName(messageBodyPart.getFileName());
+                    multipart.addBodyPart(messageBodyPart);
+                } catch (IOException | MessagingException e) {
+                    this.adjuntosRespuesta.add(a + " " + e.toString());
+                    log.error("enviarMail() - add attachment {}", e.toString());
+                }
+            }
+        }
+
+        multipart.addBodyPart(htmlPart);
+        return multipart;
     }
 
     /**
@@ -222,7 +229,7 @@ public class EnviarCorreo {
             }
         }
         if (listaTemporal.isEmpty()) {
-            this.descripcionEstado = String.format("Se esperaban {} adjunto(s), y se validaron {}",
+            this.descripcionEstado = String.format("Se esperaban %s adjunto(s), y se validaron %s",
                     this.adjuntos.size(),
                     listaTemporal.size());
         }
@@ -243,34 +250,34 @@ public class EnviarCorreo {
             return "";
         }
         if (asunto) {
-            textoACambiar = textoACambiar.replaceAll("á", "a");
-            textoACambiar = textoACambiar.replaceAll("é", "e");
-            textoACambiar = textoACambiar.replaceAll("í", "i");
-            textoACambiar = textoACambiar.replaceAll("ó", "o");
-            textoACambiar = textoACambiar.replaceAll("ú", "u");
-            textoACambiar = textoACambiar.replaceAll("ñ", "n");
+            textoACambiar = textoACambiar.replace("á", "a");
+            textoACambiar = textoACambiar.replace("é", "e");
+            textoACambiar = textoACambiar.replace("í", "i");
+            textoACambiar = textoACambiar.replace("ó", "o");
+            textoACambiar = textoACambiar.replace("ú", "u");
+            textoACambiar = textoACambiar.replace("ñ", "n");
         } else {
-            textoACambiar = textoACambiar.replaceAll("á", "&aacute;");
-            textoACambiar = textoACambiar.replaceAll("é", "&eacute;");
-            textoACambiar = textoACambiar.replaceAll("í", "&iacute;");
-            textoACambiar = textoACambiar.replaceAll("ó", "&oacute;");
-            textoACambiar = textoACambiar.replaceAll("ú", "&uacute;");
-            textoACambiar = textoACambiar.replaceAll("ñ", "&ntilde;");
+            textoACambiar = textoACambiar.replace("á", "&aacute;");
+            textoACambiar = textoACambiar.replace("é", "&eacute;");
+            textoACambiar = textoACambiar.replace("í", "&iacute;");
+            textoACambiar = textoACambiar.replace("ó", "&oacute;");
+            textoACambiar = textoACambiar.replace("ú", "&uacute;");
+            textoACambiar = textoACambiar.replace("ñ", "&ntilde;");
 
-            textoACambiar = textoACambiar.replaceAll("\\\\u00E1", "&aacute;");
-            textoACambiar = textoACambiar.replaceAll("\\\\u00E9", "&eacute;");
-            textoACambiar = textoACambiar.replaceAll("\\\\u00ED", "&iacute;");
-            textoACambiar = textoACambiar.replaceAll("\\\\u00F3", "&oacute;");
-            textoACambiar = textoACambiar.replaceAll("\\\\u00FA", "&uacute;");
-            textoACambiar = textoACambiar.replaceAll("\\\\u00F1", "&ntilde;");
-            
-            textoACambiar = textoACambiar.replaceAll("\\\\n", "<br>");
+            textoACambiar = textoACambiar.replace("\\\\u00E1", "&aacute;");
+            textoACambiar = textoACambiar.replace("\\\\u00E9", "&eacute;");
+            textoACambiar = textoACambiar.replace("\\\\u00ED", "&iacute;");
+            textoACambiar = textoACambiar.replace("\\\\u00F3", "&oacute;");
+            textoACambiar = textoACambiar.replace("\\\\u00FA", "&uacute;");
+            textoACambiar = textoACambiar.replace("\\\\u00F1", "&ntilde;");
+
+            textoACambiar = textoACambiar.replace("\\\\n", "<br>");
         }
 
         try {
-            byte[] latin1 = textoACambiar.getBytes("utf-8");
+            byte[] latin1 = textoACambiar.getBytes(StandardCharsets.UTF_8);
             return new String(latin1);
-        } catch (UnsupportedEncodingException e) {
+        } catch (Exception e) {
             return textoACambiar;
         }
     }
@@ -306,7 +313,7 @@ public class EnviarCorreo {
             log.error("No se puede procesar las propiedades {}", ex.toString());
         }
     }
-  
+
     public void setAsunto(String asunto) {
         this.asunto = changeCharSet(asunto, true);
     }
@@ -315,7 +322,6 @@ public class EnviarCorreo {
         this.cuerpo = changeCharSet(cuerpo, false);
     }
 
-   
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

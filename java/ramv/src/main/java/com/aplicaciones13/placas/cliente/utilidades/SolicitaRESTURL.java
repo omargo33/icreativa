@@ -37,11 +37,11 @@ import lombok.Setter;
 public class SolicitaRESTURL {
 
     private int timeOut;
-    private int HTTPEstado = 0;
+    private int httpEstado = 0;
 
-    private String JSONConsulta;
-    private String URLConsulta;
-    private String JSONRespuesta;
+    private String jsonConsulta;
+    private String urlConsulta;
+    private String jsonRespuesta;
     private String errorRespuesta;
     private String pathCertificado;
     private String claveCertificado;
@@ -56,10 +56,10 @@ public class SolicitaRESTURL {
     public SolicitaRESTURL() {
         super();
         timeOut = 0;
-        HTTPEstado = 0;
-        JSONConsulta = "";
-        URLConsulta = "";
-        JSONRespuesta = "";
+        httpEstado = 0;
+        jsonConsulta = "";
+        urlConsulta = "";
+        jsonRespuesta = "";
         fechaInicio = new Date();
         fechaFin = new Date();
     }
@@ -98,15 +98,15 @@ public class SolicitaRESTURL {
         connection.setConnectTimeout(getTimeOut());
         connection.setReadTimeout(getTimeOut());
 
-        if (JSONConsulta != null) {
+        if (jsonConsulta != null) {
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(connection.getOutputStream());
-            outputStreamWriter.write(JSONConsulta);
+            outputStreamWriter.write(jsonConsulta);
             outputStreamWriter.close();
         }
 
-        HTTPEstado = ((HttpURLConnection) connection).getResponseCode();
+        httpEstado = ((HttpURLConnection) connection).getResponseCode();
 
-        if (getHTTPEstado() < HttpURLConnection.HTTP_OK && getHTTPEstado() >= HttpURLConnection.HTTP_MULT_CHOICE) {
+        if (getHttpEstado() < HttpURLConnection.HTTP_OK && getHttpEstado() >= HttpURLConnection.HTTP_MULT_CHOICE) {
             inputStream = ((HttpURLConnection) connection).getErrorStream();
         } else {
             inputStream = connection.getInputStream();
@@ -121,12 +121,12 @@ public class SolicitaRESTURL {
         bufferedReader.close();
         fechaFin = new Date();
 
-        if (getHTTPEstado() < HttpURLConnection.HTTP_OK && getHTTPEstado() >= HttpURLConnection.HTTP_MULT_CHOICE) {
+        if (getHttpEstado() < HttpURLConnection.HTTP_OK && getHttpEstado() >= HttpURLConnection.HTTP_MULT_CHOICE) {
             errorRespuesta = respuesta;
-            throw new Exception(String.valueOf(getHTTPEstado()));
+            throw new Exception(String.valueOf(getHttpEstado()));
         }
 
-        JSONRespuesta = respuesta;
+        jsonRespuesta = respuesta;
     }
 
     /**
@@ -135,11 +135,10 @@ public class SolicitaRESTURL {
      * Se la puede sobrecargar.
      *
      * @return
-     * @throws MalformedURLException
      * @throws IOException
      */
-    public HttpURLConnection generarConexion() throws MalformedURLException, IOException {
-        URL url = new URL(this.URLConsulta);
+    public HttpURLConnection generarConexion() throws IOException {
+        URL url = new URL(this.urlConsulta);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         return connection;
     }
