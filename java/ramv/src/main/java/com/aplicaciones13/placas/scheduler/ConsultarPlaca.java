@@ -19,7 +19,12 @@ public class ConsultarPlaca {
     @Autowired
     private ConsultarPlacaServicio consultarPlacaServicio;
 
-    @Scheduled(cron = "0 0/30 * * * 0-6", zone = "GMT-5")
+    /**
+     * Metodo para consultar las placas encontradas en la base de datos.
+     * 
+     * Cada 30 minutos, de lunes a sabado.
+     */
+    @Scheduled(cron = "0 0/30 * * * 0-5", zone = "GMT-5")
     public void ejecutarREST() {
         consultarPlacaServicio.consultarPlacasEncontradas("C");
     }
@@ -34,6 +39,11 @@ public class ConsultarPlaca {
         consultarPlacaServicio.consultarPlacasEncontradas("E");
     }    
 
+    /**
+     * Metodo para consultar las placas encontradas en la base de datos.
+     * 
+     * Cada 90 minutos, de lunes a domingo.
+     */
     @Scheduled(cron = "0 0/90 * * * *", zone = "GMT-5")
     public void ejecutarMail() {
         consultarPlacaServicio.consultarPlacasEncontradas("M");

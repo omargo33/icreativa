@@ -145,6 +145,27 @@ public class SolicitaRESTURL {
 
     /**
      * Metodo para no comprobar el SSL de un servidor.
+     * 
+     * GitHub Copilot: En el código que proporcionaste, se está creando un
+     * `SSLContext` personalizado que confía en todos los certificados y un
+     * `HostnameVerifier` personalizado que acepta cualquier nombre de host. Esto se
+     * hace para permitir conexiones HTTPS a servidores que utilizan certificados
+     * autofirmados o que no están firmados por una autoridad de certificación
+     * confiable.
+     * 
+     * La implementación de `checkClientTrusted` y `checkServerTrusted` en la clase
+     * `X509TrustManager` personalizada es lo que permite confiar en todos los
+     * certificados. Al devolver una matriz vacía en ambos métodos, se indica que se
+     * confía en todos los certificados.
+     * 
+     * La implementación de `verify` en la clase `HostnameVerifier` personalizada es
+     * lo que permite aceptar cualquier nombre de host. Al devolver `true` en este
+     * método, se indica que se acepta cualquier nombre de host.
+     * 
+     * Ten en cuenta que confiar en todos los certificados y aceptar cualquier
+     * nombre de host puede ser peligroso, ya que esto puede permitir conexiones a
+     * servidores maliciosos. Es importante tener cuidado al usar este código y
+     * asegurarse de que solo se está conectando a servidores confiables.
      *
      * @throws NoSuchAlgorithmException
      * @throws KeyManagementException
@@ -168,7 +189,7 @@ public class SolicitaRESTURL {
         }
         };
 
-        SSLContext sc = SSLContext.getInstance("SSL");
+        SSLContext sc = SSLContext.getInstance("TLSv1.2");
         sc.init(null, trustAllCerts, new java.security.SecureRandom());
         HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
         HostnameVerifier allHostsValid = new HostnameVerifier() {
