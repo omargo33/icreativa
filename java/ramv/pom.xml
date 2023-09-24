@@ -102,10 +102,18 @@
 			<optional>true</optional>
 		</dependency>
 
+		<!-- dependencia de Swager open api -->
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
 			<version>2.0.0</version>
+		</dependency>
+
+		<!-- dependencia de admin client monitoreo -->
+		<dependency>
+			<groupId>de.codecentric</groupId>
+			<artifactId>spring-boot-admin-starter-client</artifactId>
+			<version>2.5.2</version>
 		</dependency>
 	</dependencies>
 	<build>
