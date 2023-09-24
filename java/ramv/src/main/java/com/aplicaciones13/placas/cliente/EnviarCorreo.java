@@ -1,11 +1,13 @@
 package com.aplicaciones13.placas.cliente;
 
+import com.aplicaciones13.placas.jpa.model.Parametro;
+import com.aplicaciones13.placas.jpa.model.Placa;
 import com.sun.mail.util.MailSSLSocketFactory;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
- 
+
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
@@ -56,7 +58,6 @@ import javax.mail.internet.MimeMultipart;
 @Slf4j
 public class EnviarCorreo {
     private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-
 
     private boolean accesoSSL;
     private boolean instaciaServidorAplicacion;
