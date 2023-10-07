@@ -50,6 +50,10 @@ public class PlacaServicio {
         return placaRepositorio.findByEstado(estado);
     }
 
+    public List<Placa> findByEstadoAndFechaUsuario(Date fechaUsuario) {
+        return placaRepositorio.findByEstadoAndFechaUsuario(fechaUsuario);
+    }
+
     /**
      * Metodo para crear una placa.
      * 

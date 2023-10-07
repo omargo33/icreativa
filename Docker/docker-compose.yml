@@ -1,0 +1,17 @@
+##
+## @autor omargo33@gmail.com
+## @date 2023-10-06
+## 
+## Crea una base de datos postgres 14 con una base de datos llamada ramv, con usuario postres y clave postres.
+##
+version: '3.1'
+
+services:
+  db:
+    image: postgres:14.1-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ramv
+    ports:
+      - 5432:5432

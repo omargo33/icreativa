@@ -1,6 +1,8 @@
 package com.aplicaciones13.placas.servicio;
 
 import java.time.Duration;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -26,7 +28,8 @@ import lombok.extern.slf4j.Slf4j;
  * @author omargo33@gmail.com
  * @version 2023-08-20
  * 
- * @see para descargar webdriver de chrome en: https://chromedriver.chromium.org/downloads
+ * @see para descargar webdriver de chrome en:
+ *      https://chromedriver.chromium.org/downloads
  * 
  */
 @Service
@@ -82,7 +85,45 @@ public class ConsultarPlacaServicio {
     }
 
     /**
-     * Metodo para enviar de correos indicando la terminacion de encuentro de la placa.
+     * Metodo para consultar las placas muy antiguas.
+     * 
+     * Parametros del sistema.
+     * 
+     */
+    public void consumirPlacaAntiguas() {
+        List<Integer> listaIdParametros = List.of(6, 7);
+        Map<Integer, Parametro> mapParametros = parametroServicio.findByIdParametrosIn(listaIdParametros);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_MONTH, (mapParametros.get(6).getValor1().intValue() * (-1)));
+        Date fecha = calendar.getTime();
+
+        enviarCorreo.setPropiedades(mapParametros.get(7).getTexto1() + " " + mapParametros.get(7).getTexto2());
+
+        List<Placa> listaPlacas = placaServicio.findByEstadoAndFechaUsuario(fecha);
+
+        for (Placa placa : listaPlacas) {
+
+            enviarCorreo.setCorreo(placa.getClienteCorreo());
+            enviarCorreo.setAsunto("Placa " + placa.getRamvPlaca() + " Descartada por Antiguedad en el sistema");
+            enviarCorreo.setCuerpo(
+                    "Estimad@ " + placa.getClienteNombre() + "\n\n" +
+                            "Su placa " + placa.getRamvPlaca() + " tiene la siguietne novedad ha sido descargada por antiguedad en el sistema\n\n"
+                            +
+                            "Atentamente\n");
+            placaServicio.actualizarEstado(placa.getIdPlacas(), "D");
+
+            if (enviarCorreo.enviarCorreo()) {
+                placaEventoServicio.crearPlacaEvento(placa.getIdPlacas(), enviarCorreo.getDescripcionEstado(), "F");
+            } else {
+                placaEventoServicio.crearPlacaEvento(placa.getIdPlacas(), enviarCorreo.getDescripcionEstado(), "FB");
+            }
+        }
+    }
+
+    /**
+     * Metodo para enviar de correos indicando la terminacion de encuentro de la
+     * placa.
      * 
      * Parametros del sistema.
      * 
@@ -104,7 +145,8 @@ public class ConsultarPlacaServicio {
             enviarCorreo.setAsunto("Placa " + placa.getRamvPlaca());
             enviarCorreo.setCuerpo(
                     "Estimad@ " + placa.getClienteNombre() + "\n\n" +
-                            "Su placa " + placa.getRamvPlaca() + " tiene la siguietne novedad " + novedadPlaca + "\n\n" +
+                            "Su placa " + placa.getRamvPlaca() + " tiene la siguietne novedad " + novedadPlaca + "\n\n"
+                            +
                             "Atentamente\n");
             placaServicio.actualizarEstado(placa.getIdPlacas(), "F");
 
@@ -139,7 +181,6 @@ public class ConsultarPlacaServicio {
         Duration timeout = Duration.ofSeconds(mapParametros.get(5).getValor1().intValue());
         consumoWebCliente.setTimeout(timeout);
         consumoWebCliente.setUrlSRI(mapParametros.get(4).getTexto1());
-        
 
         for (Placa placa : listaPlacas) {
             UserAgent userAgent = userAgentServicio.buscarDescripcionRandom();
