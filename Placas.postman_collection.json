@@ -1,0 +1,555 @@
+{
+	"info": {
+		"_postman_id": "31b95c98-39cc-4795-9d67-ee60eaac8e3e",
+		"name": "Placas",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "2090670"
+	},
+	"item": [
+		{
+			"name": "Parametros",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"idParametros\": 1,\n    \"texto1\": \"https://srienlinea.sri.gob.ec/sri-matriculacion-vehicular-recaudacion-servicio-internet/rest/BaseVehiculo/existePorNumeroCampvOPorNumeroCpn?numeroCampvCpn=\",\n    \"texto2\": null,\n    \"valor1\": null,\n    \"valor2\": null,\n    \"descripcion\": \"Url del sitio web de consulta REST de existencia\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/ramv/v1/parametros/",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"ramv",
+						"v1",
+						"parametros",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Parametro 2",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"idParametros\": 2,\n    \"texto1\": \"/home/icreativa/ramv/storeKey\",\n    \"texto2\": \"12341234s\",\n    \"valor1\": null,\n    \"valor2\": null,\n    \"descripcion\": \"Certificado Digital\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/ramv/v1/parametros/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"ramv",
+								"v1",
+								"parametros",
+								""
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "Parametro 3",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"idParametros\": 3,\n    \"texto1\": null,\n    \"texto2\": null,\n    \"valor1\": 3000,\n    \"valor2\": null,\n    \"descripcion\": \"TimeOut de consulta REST\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/ramv/v1/parametros/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"ramv",
+								"v1",
+								"parametros",
+								""
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "Parametro 4",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"idParametros\": 4,\n    \"texto1\": \"https://srienlinea.sri.gob.ec/sri-en-linea/SriVehiculosWeb/ConsultaValoresPagarVehiculo/Consultas/consultaRubros\",\n    \"texto2\": null,\n    \"valor1\": null,\n    \"valor2\": null,\n    \"descripcion\": \"Url del sitio Web consulta selenium\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/ramv/v1/parametros/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"ramv",
+								"v1",
+								"parametros",
+								""
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "Parametro 5",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"idParametros\": 5,\n    \"texto1\": null,\n    \"texto2\": null,\n    \"valor1\": 10,\n    \"valor2\": null,\n    \"descripcion\": \"TimeOut de espera en consulta web\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/ramv/v1/parametros/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"ramv",
+								"v1",
+								"parametros",
+								""
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "Parametro 6",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"idParametros\": 6,\n    \"texto1\": \"13a.usuario=notificacionesramv@icreativa.com.ec 13a.clave=23Ttb0s&2K4b 13a.instancia.servidor=false 13a.acceso.ssl=true mail.smtp.host=mail.icreativa.com.ec mail.smtp.port=587 mail.smtp.auth=true mail.smtp.starttls.enable=true mail.smtp.socketFactory.class=javax.net.ssl.SSLSocketFactory\",\n    \"texto2\": null,\n    \"valor1\": null,\n    \"valor2\": null,\n    \"descripcion\": \"Propiedades del correo que deben ser ingresadas con conocimiento\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/ramv/v1/parametros/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"ramv",
+								"v1",
+								"parametros",
+								""
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				},
+				{
+					"name": "Parametro 7",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"idParametros\": 7,\n    \"texto1\": null,\n    \"texto2\": null,\n    \"valor1\": 20,\n    \"valor2\": null,\n    \"descripcion\": \"Dias de descarte de la placa\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/ramv/v1/parametros/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"ramv",
+								"v1",
+								"parametros",
+								""
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "Parametro por Id",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/ramv/v1/parametros/7",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"ramv",
+						"v1",
+						"parametros",
+						"7"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Placas",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"ramvPlaca\": \"G02788885\",\n    \"cliente\": \"0102581709001\",\n    \"usuario\": \"o.velez\",\n    \"usuarioPrograma\": \"manual\",\n    \"estado\": \"C\",\n    \"clienteNombre\": \"Omar Velez\",\n    \"clienteCorreo\": \"omargo33@gmail.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/ramv/v1/placas/",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"ramv",
+						"v1",
+						"placas",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Placa por RAMV",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/ramv/v1/placas/G02788885",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"ramv",
+						"v1",
+						"placas",
+						"G02788885"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "mail",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/ramv/v1/mail/",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"ramv",
+						"v1",
+						"mail",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Eventos por Placa",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/ramv/v1/placas/eventos/G02788885",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"ramv",
+						"v1",
+						"placas",
+						"eventos",
+						"G02788885"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Agents",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"descripcion\": \"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.38\",\n    \"idWebClient\": 1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/ramv/v1/useragents/",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"ramv",
+						"v1",
+						"useragents",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User Agents por Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/ramv/v1/useragents/2",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"ramv",
+						"v1",
+						"useragents",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Web Client",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/ramv/v1/webclients/",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"ramv",
+						"v1",
+						"webclients",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Web Client",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"version\": \"116\",\n    \"path\": \"/home/icreativa/ramv/chromedriver-116\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/ramv/v1/webclients/",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"ramv",
+						"v1",
+						"webclients",
+						""
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Web Client",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"version\": \"114\",\n    \"path\": \"/home/icreativa/ramv/chromedriver-114.0.5735.90\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/ramv/v1/webclients/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"ramv",
+								"v1",
+								"webclients",
+								""
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "Web Client por Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/ramv/v1/webclients/1",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"ramv",
+						"v1",
+						"webclients",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Web Client por Id Copy",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/ramv/v1/webclients/1",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"ramv",
+						"v1",
+						"webclients",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PlaclaInicioProceso",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://srienlinea.sri.gob.ec/sri-matriculacion-vehicular-recaudacion-servicio-internet/rest/BaseVehiculo/existePorNumeroCampvOPorNumeroCpn?numeroCampvCpn=I0097506",
+					"protocol": "https",
+					"host": [
+						"srienlinea",
+						"sri",
+						"gob",
+						"ec"
+					],
+					"path": [
+						"sri-matriculacion-vehicular-recaudacion-servicio-internet",
+						"rest",
+						"BaseVehiculo",
+						"existePorNumeroCampvOPorNumeroCpn"
+					],
+					"query": [
+						{
+							"key": "numeroCampvCpn",
+							"value": "I0097506"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

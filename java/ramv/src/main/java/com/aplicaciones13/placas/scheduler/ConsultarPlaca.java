@@ -48,4 +48,14 @@ public class ConsultarPlaca {
     public void ejecutarMail() {
         consultarPlacaServicio.consultarPlacasEncontradas("M");
     }
+
+    /**
+     * Metodo para consultar las placas muy antiguas.
+     * 
+     * Todos los dias a las 10am.
+     */
+    @Scheduled(cron = "0 0 10 * * *", zone = "GMT-5")
+    public void ejecutarPlacasAntiguas() {
+        consultarPlacaServicio.consumirPlacaAntiguas();
+    }
 }
