@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
  * @since 2023-08-20
  */
 @RestController
-@RequestMapping(value = "/v1/webclients")
+@RequestMapping(value = "/webclients")
 public class WebClients extends ComonControlador {
 
     @Autowired

@@ -1,7 +1,5 @@
 package com.aplicaciones13.placas.cliente;
 
-import com.aplicaciones13.placas.jpa.model.Parametro;
-import com.aplicaciones13.placas.jpa.model.Placa;
 import com.sun.mail.util.MailSSLSocketFactory;
 
 import lombok.Getter;
@@ -119,6 +117,7 @@ public class EnviarCorreo {
             try {
                 enviarMail();
                 estado = true;
+                descripcionEstado = "Correo enviado";
             } catch (Exception e) {
                 log.error("Correo {} no se pudo enviar por {}", this.correo, e.toString());
                 descripcionEstado = "Tiene el siguiente error:" + e.toString();

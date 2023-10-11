@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import com.aplicaciones13.placas.cliente.ConsumoPlaca;
 import com.aplicaciones13.placas.cliente.ConsumoWebCliente;
-import com.aplicaciones13.placas.cliente.EnviarCorreo;
 import com.aplicaciones13.placas.jpa.model.Parametro;
 import com.aplicaciones13.placas.jpa.model.Placa;
 import com.aplicaciones13.placas.jpa.model.UserAgent;
@@ -39,8 +38,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ConsultarPlacaServicio {
     ConsumoPlaca consumoPlaca = new ConsumoPlaca();
     ConsumoWebCliente consumoWebCliente = new ConsumoWebCliente();
-    EnviarCorreo enviarCorreo = new EnviarCorreo();
-
+    
     @Autowired
     ParametroServicio parametroServicio;
 
@@ -55,6 +53,9 @@ public class ConsultarPlacaServicio {
 
     @Autowired
     WebClientServicio webClientServicio;
+
+    @Autowired
+    CorreoServicio correoServicio;
 
     /**
      * Metodo para consultar las placas encontradas en la base de datos.
@@ -98,26 +99,13 @@ public class ConsultarPlacaServicio {
         calendar.add(Calendar.DAY_OF_MONTH, (mapParametros.get(6).getValor1().intValue() * (-1)));
         Date fecha = calendar.getTime();
 
-        enviarCorreo.setPropiedades(mapParametros.get(7).getTexto1() + " " + mapParametros.get(7).getTexto2());
-
         List<Placa> listaPlacas = placaServicio.findByEstadoAndFechaUsuario(fecha);
 
         for (Placa placa : listaPlacas) {
+            correoServicio.enviarCorreoAntiguas(placa.getIdPlacas(), placa.getRamvPlaca(), placa.getUsuario(),
+                    mapParametros.get(6).getTexto1() + " " + mapParametros.get(6).getTexto2());
 
-            enviarCorreo.setCorreo(placa.getClienteCorreo());
-            enviarCorreo.setAsunto("Placa " + placa.getRamvPlaca() + " Descartada por Antiguedad en el sistema");
-            enviarCorreo.setCuerpo(
-                    "Estimad@ " + placa.getClienteNombre() + "\n\n" +
-                            "Su placa " + placa.getRamvPlaca() + " tiene la siguietne novedad ha sido descargada por antiguedad en el sistema\n\n"
-                            +
-                            "Atentamente\n");
             placaServicio.actualizarEstado(placa.getIdPlacas(), "D");
-
-            if (enviarCorreo.enviarCorreo()) {
-                placaEventoServicio.crearPlacaEvento(placa.getIdPlacas(), enviarCorreo.getDescripcionEstado(), "F");
-            } else {
-                placaEventoServicio.crearPlacaEvento(placa.getIdPlacas(), enviarCorreo.getDescripcionEstado(), "FB");
-            }
         }
     }
 
@@ -136,25 +124,15 @@ public class ConsultarPlacaServicio {
      */
     private void consumirMail(List<Placa> listaPlacas) {
         Parametro parametro = parametroServicio.findByIdParametros(6);
-        enviarCorreo.setPropiedades(parametro.getTexto1() + " " + parametro.getTexto2());
 
         for (Placa placa : listaPlacas) {
             String novedadPlaca = placaEventoServicio.findByIdPlacaAndEstadoM(placa.getIdPlacas()).getDescripcion();
 
-            enviarCorreo.setCorreo(placa.getClienteCorreo());
-            enviarCorreo.setAsunto("Placa " + placa.getRamvPlaca());
-            enviarCorreo.setCuerpo(
-                    "Estimad@ " + placa.getClienteNombre() + "\n\n" +
-                            "Su placa " + placa.getRamvPlaca() + " tiene la siguietne novedad " + novedadPlaca + "\n\n"
-                            +
-                            "Atentamente\n");
-            placaServicio.actualizarEstado(placa.getIdPlacas(), "F");
+            correoServicio.enviarCorreoEncontrado(placa.getIdPlacas(), placa.getRamvPlaca(), novedadPlaca,
+                    placa.getUsuario(),
+                    parametro.getTexto1() + " " + parametro.getTexto2());
 
-            if (enviarCorreo.enviarCorreo()) {
-                placaEventoServicio.crearPlacaEvento(placa.getIdPlacas(), enviarCorreo.getDescripcionEstado(), "F");
-            } else {
-                placaEventoServicio.crearPlacaEvento(placa.getIdPlacas(), enviarCorreo.getDescripcionEstado(), "FB");
-            }
+            placaServicio.actualizarEstado(placa.getIdPlacas(), "F");
         }
     }
 
