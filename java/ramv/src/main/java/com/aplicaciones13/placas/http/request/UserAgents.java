@@ -15,7 +15,7 @@ import com.aplicaciones13.placas.jpa.model.UserAgent;
 import com.aplicaciones13.placas.servicio.UserAgentServicio;
 
 @RestController
-@RequestMapping(value = "/v1/useragents")
+@RequestMapping(value = "/useragents")
 public class UserAgents {
 
     @Autowired

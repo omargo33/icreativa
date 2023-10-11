@@ -20,7 +20,7 @@ import com.aplicaciones13.placas.servicio.ParametroServicio;
  * @since 2023-08-20
  */
 @RestController
-@RequestMapping(value = "/v1/parametros")
+@RequestMapping(value = "/parametros")
 public class Parametros extends ComonControlador {
 
     @Autowired

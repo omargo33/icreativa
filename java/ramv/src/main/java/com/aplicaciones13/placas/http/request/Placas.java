@@ -25,7 +25,7 @@ import com.aplicaciones13.placas.servicio.PlacaServicio;
  * 
  */
 @RestController
-@RequestMapping(value = "/v1/placas")
+@RequestMapping(value = "/placas")
 public class Placas {
 
     @Autowired

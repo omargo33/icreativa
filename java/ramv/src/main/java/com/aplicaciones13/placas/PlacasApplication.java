@@ -17,7 +17,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
         "com.aplicaciones13.placas.servicio",
         "com.aplicaciones13.placas.scheduler",
         // "com.aplicaciones13.placas.validadores",
-        // "com.aplicaciones13.placas.configuracion",
+        "com.aplicaciones13.placas.configuracion",
+        "com.aplicaciones13.placas.security",
 })
 @EntityScan(basePackages = {
         "com.aplicaciones13.placas.jpa.model",
