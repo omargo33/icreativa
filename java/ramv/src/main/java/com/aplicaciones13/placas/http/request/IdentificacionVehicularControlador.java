@@ -35,7 +35,6 @@ import com.aplicaciones13.placas.servicio.PlacaServicio;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-
 /**
  * Clase para consumir el servicio de identificacion vehicular.
  * 
@@ -122,6 +121,49 @@ public class IdentificacionVehicularControlador extends ComonControlador {
         List<RamvResponse> listaRamv = new ArrayList<>();
         listaRamv.add(ramvResponse);
 
+        return ResponseEntity.ok(listaRamv);
+    }
+
+    /**
+     * Metodo para obtener por identificacion vehicular por usuario y estado.
+     * 
+     * @param request
+     * @param estado
+     * @return
+     */
+    @GetMapping("?estado={estado}")
+    public ResponseEntity<?> getEstadoRamvPorEstado(HttpServletRequest request, @PathVariable String estado) {
+        String token = jwtUtils.getJwtFromHeader(request);
+        String userName = jwtUtils.getUserNameFromJwtToken(token);
+        List<RamvResponse> listaRamv = new ArrayList<>();
+
+        if (estado.compareToIgnoreCase("PENDIENTE") == 0) {
+            List<Placa> listaPlacas = placaServicio.findByUsuarioPendiente(userName);
+
+            for (Placa placa : listaPlacas) {
+                RamvResponse ramvResponse = new RamvResponse();
+                ramvResponse.setIndentificacion(placa.getRamvPlaca());
+                ramvResponse.setEstado(estado);
+                ramvResponse.setFechaSolicitud(generarFechaFormato(placa.getUsuarioFecha()));
+                ramvResponse.setFechaRespuesta("");
+                listaRamv.add(ramvResponse);
+            }
+        } else {
+            List<Placa> listaPlacas = placaServicio.findByUsuarioEncontrado(userName);
+
+            for (Placa placa : listaPlacas) {
+                RamvResponse ramvResponse = new RamvResponse();
+                ramvResponse.setIndentificacion(placa.getRamvPlaca());
+                ramvResponse.setEstado("ENCONTRADO");
+                ramvResponse.setFechaSolicitud(generarFechaFormato(placa.getUsuarioFecha()));
+
+                if (placa.getEstado().equals("M")) {
+                    PlacaEvento placaEvento = placaEventoServicio.findByIdPlacaAndEstadoM(placa.getIdPlacas());
+                    ramvResponse.setFechaRespuesta(generarFechaFormato(placaEvento.getFecha()));
+                }
+                listaRamv.add(ramvResponse);
+            }
+        }
         return ResponseEntity.ok(listaRamv);
     }
 

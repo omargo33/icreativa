@@ -33,9 +33,22 @@ public interface PlacaRepositorio extends JpaRepository<Placa, Integer> {
     List<Placa> findByEstado(String estado);
 
     /**
-     * Metodo para buscar las placas con un estado es C o M y mayor a una
-     * fecha_usuario
+     *  Metodo para buscar las placas por estado es M y usuario
+     * 
+     * @param usuario
      */
+    @Query(value = "SELECT id_placas, placa, usuario, usuario_fecha, usuario_programa, estado FROM public.placas WHERE estado = 'M' AND usuario = :usuario", nativeQuery = true)
+    List<Placa> findByUsuarioEncontrado(String usuario);
+
+
+    /**
+     * Metodo para buscar las placas que no tengan el estado es M o D; por usuario con codigo nativo
+     * 
+     * @param usuario
+     */
+    @Query(value = "SELECT id_placas, placa, usuario, usuario_fecha, usuario_programa, estado FROM public.placas WHERE estado NOT IN ('M', 'D') AND usuario = :usuario", nativeQuery = true)
+    List<Placa> findByUsuarioPendiente(String usuario);
+    
 
     /**
      * Metodo para actualizar el estado con sobre el id de la placa con un query

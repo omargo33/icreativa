@@ -50,6 +50,11 @@ public class PlacaServicio {
         return placaRepositorio.findByEstado(estado);
     }
 
+    /**
+     * Metodo para buscar por fecha.
+     * 
+     * @param fechaUsuario
+     */
     public List<Placa> findByEstadoAndFechaUsuario(Date fechaUsuario) {
         return placaRepositorio.findByEstadoAndFechaUsuario(fechaUsuario);
     }
@@ -85,4 +90,23 @@ public class PlacaServicio {
     public void actualizarEstado(Integer idPlacas, String estado) {
         placaRepositorio.actualizarEstado(idPlacas, estado);
     }
+
+    /**
+     * Metodo para buscar las placas que no tengan el estado es M o D; por usuario
+     * 
+     * @param usuario
+     */
+    public List<Placa> findByUsuarioPendiente(String usuario) {
+        return placaRepositorio.findByUsuarioPendiente(usuario);
+    }    
+
+    /**
+     * Metodo para buscar las placas que tengan el estado es M; por usuario
+     * 
+     * @param usuario
+     */
+    public List<Placa> findByUsuarioEncontrado(String usuario) {
+        return placaRepositorio.findByUsuarioEncontrado(usuario);
+    }
+
 }
