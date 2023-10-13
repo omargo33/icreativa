@@ -6,11 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.aplicaciones13.placas.cliente.EnviarCorreo;
+import com.aplicaciones13.placas.jpa.model.Correo;
 import com.aplicaciones13.placas.jpa.model.Parametro;
 import com.aplicaciones13.placas.jpa.queries.CorreoRepositorio;
 
 import lombok.RequiredArgsConstructor;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -32,6 +34,55 @@ public class CorreoServicio {
 
     @Autowired
     private CorreoRepositorio correoRepositorio;
+
+
+    /**
+     * Metodo para obtener los correos de los usuarios.
+     * 
+     * @param userName
+     * @return
+     */
+    public List<Correo> getUsuariosNotificacion(String userName) {
+        return correoRepositorio.findByUsuario(userName);
+    }
+
+    /**
+     * Metodo para crear un usuario de notificacion.
+     *  
+     * @param correo
+     * @param userName
+     * @param usuarioPrograma
+     */
+    public void crearUsuarioNotificacion(String correo, String userName, String usuarioPrograma) {
+        Correo correoUsuario = new Correo();
+        correoUsuario.setCorreo(correo);
+        correoUsuario.setUsuario(userName);
+        correoUsuario.setUsuarioFecha(new Date());
+        correoUsuario.setUsuarioPrograma(usuarioPrograma);
+        correoRepositorio.save(correoUsuario);
+    }
+
+    /**
+     * Metodo para eliminar un usuario de notificacion.
+     * 
+     * @param correo
+     * @param userName
+     * @param usuarioPrograma
+     */
+    public void eliminarUsuarioNotificacion(int idCorreos) {
+        Correo correoUsuario = correoRepositorio.findByIdCorreos(idCorreos);
+        correoRepositorio.delete(correoUsuario);
+    }
+
+    /**
+     * Metodo para si existe un usuario de notificacion.
+     * 
+     * @param correo
+     * @param userName
+     */
+    public boolean existsByCorreoAndUsuario(String correo, String userName) {
+        return correoRepositorio.existsByCorreoAndUsuario(correo, userName);
+    }
 
     /**
      * Metodo para enviar correos de placas encontradas.

@@ -13,14 +13,17 @@ import org.springframework.web.bind.annotation.RestController;
 import com.aplicaciones13.placas.jpa.model.Parametro;
 import com.aplicaciones13.placas.servicio.ParametroServicio;
 
+import io.swagger.v3.oas.annotations.Hidden;
+
 /**
  * Clase para consumir el servicio de parametros.
  * 
  * @author omargo33@gmail.com
  * @since 2023-08-20
  */
+@Hidden
 @RestController
-@RequestMapping(value = "/parametros")
+@RequestMapping(value = "/v1/parametros")
 public class Parametros extends ComonControlador {
 
     @Autowired

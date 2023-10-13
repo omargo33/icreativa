@@ -14,8 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.aplicaciones13.placas.jpa.model.UserAgent;
 import com.aplicaciones13.placas.servicio.UserAgentServicio;
 
+import io.swagger.v3.oas.annotations.Hidden;
+
+@Hidden
 @RestController
-@RequestMapping(value = "/useragents")
+@RequestMapping(value = "/v1/useragents")
 public class UserAgents {
 
     @Autowired

@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.aplicaciones13.placas.jpa.model.WebClient;
 import com.aplicaciones13.placas.servicio.WebClientServicio;
+
+import io.swagger.v3.oas.annotations.Hidden;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -22,8 +25,9 @@ import org.springframework.web.bind.annotation.RequestBody;
  * @author omargo33@gmail.com
  * @since 2023-08-20
  */
+@Hidden
 @RestController
-@RequestMapping(value = "/webclients")
+@RequestMapping(value = "/v1/webclients")
 public class WebClients extends ComonControlador {
 
     @Autowired
