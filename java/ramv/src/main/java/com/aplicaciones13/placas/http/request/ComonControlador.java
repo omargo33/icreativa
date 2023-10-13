@@ -24,9 +24,8 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * Clase para controlar las excepciones.
  * 
- * @author o.velez@qapaq.io
+ * @author omargo33@gmail.com
  * @since 2020-10-04
- * @see https://www.baeldung.com/spring-keycloak-get-user-id
  * 
  */
 @Slf4j

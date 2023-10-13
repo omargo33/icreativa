@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.criteria.CriteriaBuilder.In;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -23,7 +22,6 @@ import com.aplicaciones13.placas.http.request.body.UsuarioNotificacionDeleteRequ
 import com.aplicaciones13.placas.http.request.body.UsuarioNotificacionRequest;
 import com.aplicaciones13.placas.http.request.body.UsuarioNotificacionResponse;
 import com.aplicaciones13.placas.jpa.model.Correo;
-import com.aplicaciones13.placas.jpa.model.Placa;
 import com.aplicaciones13.placas.security.JwtUtils;
 import com.aplicaciones13.placas.servicio.CorreoServicio;
 
@@ -107,7 +105,7 @@ public class UsuarioNotificacionControlador extends ComonControlador {
     public ResponseEntity<?> deleteUsuariosNotificacion(HttpServletRequest request,
             @Valid @RequestBody UsuarioNotificacionDeleteRequest usuarioNotificacionDeleteRequest) {
 
-        Integer id = new Integer(usuarioNotificacionDeleteRequest.getId());
+        Integer id = Integer.valueOf(usuarioNotificacionDeleteRequest.getId());
         correoServicio.eliminarUsuarioNotificacion(id);
         return ResponseEntity.noContent().build();
     }

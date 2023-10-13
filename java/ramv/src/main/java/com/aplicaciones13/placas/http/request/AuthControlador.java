@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -69,5 +70,17 @@ public class AuthControlador extends ComonControlador{
         tokenResponse.setTokenAccess(token);
 
         return ResponseEntity.ok(tokenResponse);
+    }
+
+    /**
+     * Metodo para crear una clave.
+     * 
+     * @param clave
+     * @return
+     */
+    @PostMapping("/{clave}")
+    public ResponseEntity<?> crearClave(@PathVariable String clave) {
+        String password = encoder.encode(clave); 
+        return ResponseEntity.ok(password);
     }
 }
