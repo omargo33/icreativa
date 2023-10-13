@@ -3,6 +3,8 @@ package com.aplicaciones13.placas.http.request;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -164,6 +166,18 @@ public class ComonControlador {
         Map<String, String> errors = new HashMap<>();        
         errors.put(getControllerMapping(), "E-GS00100-19");
         return errors;
+    }
+
+    /**
+     * Metodo para conocer el ip del cliente, a partir del request
+     * 
+     */
+    protected String getIpClient(HttpServletRequest request) {
+        String ip = request.getHeader("X-Forwarded-For");
+        if (ip == null) {
+            ip = request.getRemoteAddr();
+        }
+        return ip;
     }
 
 }

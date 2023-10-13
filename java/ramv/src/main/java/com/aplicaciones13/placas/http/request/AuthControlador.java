@@ -4,7 +4,6 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,10 +21,20 @@ import com.aplicaciones13.placas.jpa.queries.UsuarioRepositorio;
 import com.aplicaciones13.placas.security.JwtUtils;
 import com.aplicaciones13.placas.servicio.UserDetailsImpl;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+/**
+ * Clase para consumir el servicio de autorizacion para los usuarios.
+ * 
+ * @author omargo33@gmail.com
+ * @since 2023-10-11
+ * 
+ */
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
+@Tag(name = "auth", description = "Servicio para autenticar usuarios")
 @RequestMapping("/auth")
-public class Auth {
+public class AuthControlador extends ComonControlador{
     @Autowired
     AuthenticationManager authenticationManager;
 
@@ -38,6 +47,12 @@ public class Auth {
     @Autowired
     JwtUtils jwtUtils;
 
+    /**
+     * Metodo para autenticar usuarios.
+     * 
+     * @param loginRequest
+     * @return
+     */
     @PostMapping("/")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         Authentication authentication = authenticationManager

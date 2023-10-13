@@ -17,6 +17,8 @@ import com.aplicaciones13.placas.jpa.model.PlacaEvento;
 import com.aplicaciones13.placas.servicio.PlacaEventoServicio;
 import com.aplicaciones13.placas.servicio.PlacaServicio;
 
+import io.swagger.v3.oas.annotations.Hidden;
+
 /**
  * Clase que contiene los metodos para ingreso de placas a consultar y respuestas que el sistema tiene al respecto.
  * 
@@ -24,8 +26,9 @@ import com.aplicaciones13.placas.servicio.PlacaServicio;
  * @since: 2023-08-13
  * 
  */
+@Hidden
 @RestController
-@RequestMapping(value = "/placas")
+@RequestMapping(value = "/v1/placas")
 public class Placas {
 
     @Autowired
