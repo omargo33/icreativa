@@ -1,7 +1,5 @@
 package com.aplicaciones13.placas.security;
 
-import static io.jsonwebtoken.Jwts.parserBuilder;
-
 import java.security.Key;
 import java.util.Collection;
 import java.util.Date;
@@ -20,8 +18,6 @@ import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.List;
 
 /**
  * Clase para generar el token y validar el token
@@ -49,16 +45,6 @@ public class JwtUtils {
   public String getUserNameFromJwtToken(String token) {
     return Jwts.parserBuilder().setSigningKey(key()).build()
         .parseClaimsJws(token).getBody().getSubject();
-  }
-
-  /**
-   * Obiene los roles desde el token
-   * 
-   * @return
-   */
-  public List<String> getRoleStringsFromToken(String token) {
-    return parserBuilder().setSigningKey(key()).build()
-        .parseClaimsJws(token).getBody().get("roles", List.class);
   }
 
   /**
