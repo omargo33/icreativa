@@ -21,6 +21,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.PageLoadStrategy;
 
+
+//TODO: Cambiar para bajar el archivo con los RIDE
 /**
  * Clase para consumir una pagina web mediante selenium y conocer el estado de
  * la placa de un vehiculo.
