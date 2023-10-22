@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.aplicaciones13.downride.jpa.model.WebClient;
 import com.aplicaciones13.downride.servicio.WebClientServicio;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,7 +26,8 @@ import org.springframework.web.bind.annotation.RequestBody;
  * @since 2023-08-20
  */
 
- @RestController
+@RestController
+@Tag(name = "webclients", description = "Servicio para manejar los clientes-web de chrome")
 @RequestMapping(value = "/v1/webclients")
 public class WebClients extends ComonControlador {
 

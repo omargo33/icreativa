@@ -14,8 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.aplicaciones13.downride.jpa.model.UserAgent;
 import com.aplicaciones13.downride.servicio.UserAgentServicio;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 
 @RestController
+@Tag(name = "user-agents", description = "Servicio para manejar los user-agents de chrome")
 @RequestMapping(value = "/v1/useragents")
 public class UserAgents {
 

@@ -164,6 +164,7 @@ public class ComonControlador {
     private Map<String, String> sqlIntegrityConstraintViolationException(DataIntegrityViolationException ex) {
         Map<String, String> errors = new HashMap<>();        
         errors.put(getControllerMapping(), "E-GS00100-19");
+        log.error(ex.toString());
         return errors;
     }
 
@@ -178,5 +179,4 @@ public class ComonControlador {
         }
         return ip;
     }
-
 }

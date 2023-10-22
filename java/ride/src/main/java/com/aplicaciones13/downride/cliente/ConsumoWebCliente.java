@@ -21,7 +21,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.PageLoadStrategy;
 
-
 //TODO: Cambiar para bajar el archivo con los RIDE
 /**
  * Clase para consumir una pagina web mediante selenium y conocer el estado de
@@ -41,15 +40,15 @@ public class ConsumoWebCliente {
   private String placa = "I0097902";
   private String urlSRI = "https://srienlinea.sri.gob.ec/sri-en-linea/SriVehiculosWeb/ConsultaValoresPagarVehiculo/Consultas/consultaRubros";
   private String userAgent = "Mozilla/5.0 (Linux; Android 10; CPH2239) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Mobile Safari/537.36";
-  private String chromeDriver= "/home/ovelez/Documentos/clientes/iCreativa/java/placas/src/main/resources/chromedriver";
+  private String chromeDriver = "/home/ovelez/Documentos/clientes/iCreativa/java/placas/src/main/resources/chromedriver";
 
   /**
-   * Metodo para crear el objeto. 
+   * Metodo para crear el objeto.
    * 
    * Para ejecuar el proceso String[] args
    */
   public void ejecutarTest() {
-    ConsumoWebCliente consumoWebCliente = new ConsumoWebCliente();    
+    ConsumoWebCliente consumoWebCliente = new ConsumoWebCliente();
     boolean estado = consumoWebCliente.ejecutar();
     log.info("Estado: {}", estado);
     log.info("Respuesta: {}", consumoWebCliente.getRespuesta());
@@ -88,7 +87,7 @@ public class ConsumoWebCliente {
    * Elimina las cookies
    */
   private void configurarDriver() {
-    System.setProperty("webdriver.chrome.driver",chromeDriver);
+    System.setProperty("webdriver.chrome.driver", chromeDriver);
     timeout = Duration.ofSeconds(10);
 
     List<String> listaOpciones = new ArrayList<>();
@@ -176,9 +175,9 @@ public class ConsumoWebCliente {
       WebElement sriMatricula = wait
           .until(ExpectedConditions.presenceOfElementLocated(By.tagName("sri-rutas-matriculacion")));
       respuesta = sriMatricula.getText();
-      if (respuesta.indexOf("Marca") >= 0){
+      if (respuesta.indexOf("Marca") >= 0) {
         estado = true;
-      }else{
+      } else {
         respuesta = "No se encontro la Marca";
       }
     } catch (Exception e2) {
