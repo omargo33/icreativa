@@ -5,16 +5,23 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import com.aplicaciones13.downride.cliente.utilidades.Archivo;
+import com.aplicaciones13.downride.jpa.model.Dia;
 import com.aplicaciones13.downride.jpa.model.Documento;
 import com.aplicaciones13.downride.jpa.model.Ruc;
+import com.aplicaciones13.downride.jpa.queries.DiaRepositorio;
 import com.aplicaciones13.downride.jpa.queries.DocumentoRepositorio;
 import com.aplicaciones13.downride.jpa.queries.RucRepositorio;
-import com.aplicaciones13.downride.utilidad.Archivo;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Clase para el servicio RUC
@@ -25,6 +32,7 @@ import lombok.RequiredArgsConstructor;
  */
 @Service
 @Transactional
+@Slf4j
 @RequiredArgsConstructor
 public class RucServicio {
 
@@ -33,6 +41,9 @@ public class RucServicio {
 
     @Autowired
     private final DocumentoRepositorio documentoRepositorio;
+
+    @Autowired
+    private final DiaRepositorio diaRepositorio;
 
     /**
      * Metodo para buscar todos los rucs, pero que estado sea A
@@ -117,10 +128,18 @@ public class RucServicio {
      * @param programaUsuario
      */
     public void cargarDocumentos(int idRucs, String pathFile, String programaUsuario) {
+
+        Map<String, String> mapa = new HashMap<>();
+
         Archivo archivo = new Archivo() {
             @Override
             public void leerFilaCVS(String linea) {
                 String[] campos = linea.split("\t");
+
+                if (campos[0].equals("COMPROBANTE")) {
+                    return;
+                }
+
                 Documento documento = documentoRepositorio.findByIdRucsAndNumeroAutorizacion(idRucs, campos[10]);
                 if (documento != null) {
                     documentoRepositorio.updateEstado(idRucs, campos[10]);
@@ -131,24 +150,89 @@ public class RucServicio {
                         campos[1], // serie_comprobante
                         campos[2], // ruc
                         campos[3], // razon_social
-                        campos[4], // fecha_emision
-                        campos[5], // fecha_autorizacion
+                        convertirStringSimple(campos[4]), // fecha_emision
+                        convertirStringFull(campos[5]), // fecha_autorizacion
                         campos[6], // tipo
                         campos[7], // numero_documento_modificado
                         campos[8], // identificacion_receptor
                         campos[9], // clave_acceso
                         campos[10], // numero_autorizacion
-                        campos[11], // importe_total
+                        convertirStringDouble((campos.length > 11) ? campos[11] : "0"), // importe_total
                         programaUsuario,
                         idRucs,
                         "A");
-                // TODO
-                // crear un mapa con las fechas para ingresar los dias. si el archivo viene de
-                // un mes se tien que proporcionar anio y ultimo dia del mes
+                mapa.put(campos[5].substring(0, 10), campos[5]);
             }
         };
         archivo.setPathFile(pathFile);
         archivo.leerAchivos();
-        archivo.borrarArchivo();
+        log.error(archivo.getError());
+        cargarFechasConsultadas(idRucs, mapa);
+    }
+
+    /**
+     * Metodo para cargar las fechas consultadas
+     * 
+     * @param idRucs
+     * @param mapa
+     */
+    private void cargarFechasConsultadas(int idRucs, Map<String, String> mapa) {
+        for (Map.Entry<String, String> entry : mapa.entrySet()) {
+            Date fecha = convertirStringSimple(entry.getValue());
+            if (!diaRepositorio.existsByIdRucsAndDiaConsultado(idRucs, fecha)) {
+                Dia dia = new Dia();
+                dia.setIdRucs(idRucs);
+                dia.setDiaConsultado(fecha);
+                dia.setUsuarioFecha(new Date());
+                diaRepositorio.save(dia);
+            }
+        }
+    }
+
+    /**
+     * Metodo para convertir un string a fecha
+     * 
+     * @param fechaString
+     * @return
+     */
+    private Date convertirStringFull(String fechaString) {
+        Date fechaJava = new Date();
+        try {
+            SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            fechaJava = formato.parse(fechaString);
+        } catch (ParseException e) {
+            log.error(e.getMessage());
+        }
+
+        return fechaJava;
+    }
+
+    private double convertirStringDouble(String importeTotal) {
+        double importe = 0;
+        try {
+            importe = Double.parseDouble(importeTotal);
+        } catch (NumberFormatException e) {
+            log.error(e.getMessage());
+        }
+        return importe;
+    }
+
+    /**
+     * Metodo para convertir un string a fecha
+     * 
+     * @param fechaString
+     * @return
+     */
+    private Date convertirStringSimple(String fechaString) {
+        Date fechaJava = new Date();
+
+        try {
+            SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+            fechaJava = formato.parse(fechaString);
+        } catch (ParseException e1) {
+            log.error(e1.getMessage());
+        }
+
+        return fechaJava;
     }
 }

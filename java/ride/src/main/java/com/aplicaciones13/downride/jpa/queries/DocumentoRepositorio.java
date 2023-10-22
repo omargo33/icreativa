@@ -1,5 +1,7 @@
 package com.aplicaciones13.downride.jpa.queries;
 
+import java.util.Date;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -38,7 +40,8 @@ public interface DocumentoRepositorio extends JpaRepository<Documento, Integer> 
      * @param numeroAutorizacion
      * 
      */
-    @Query(value = "UPDATE public.documentos SET estado = 'X' WHERE numero_autorizacion = ?1 AND id_rucs = ?2", nativeQuery = true)
+    @Modifying
+    @Query(value = "UPDATE public.documentos SET estado = 'X' WHERE id_rucs = ?1 AND numero_autorizacion = ?2", nativeQuery = true)
     void updateEstado(Integer idRucs, String numeroAutorizacion);
 
     /**
@@ -48,7 +51,7 @@ public interface DocumentoRepositorio extends JpaRepository<Documento, Integer> 
     @Modifying
     @Query(value = "INSERT INTO public.documentos ( comprobante, serie_comprobante, ruc, razon_social, fecha_emision, fecha_autorizacion, tipo, numero_documento_modificado, identificacion_receptor, clave_acceso, numero_autorizacion, importe_total, usuario_programa, id_rucs, estado) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", nativeQuery = true)
     void insertDocumento(String comprobante, String serieComprobante, String ruc, String razonSocial,
-            String fechaEmision, String fechaAutorizacion, String tipo, String numeroDocumentoModificado,
-            String identificacionReceptor, String claveAcceso, String numeroAutorizacion, String importeTotal,
+            Date fechaEmision, Date fechaAutorizacion, String tipo, String numeroDocumentoModificado,
+            String identificacionReceptor, String claveAcceso, String numeroAutorizacion, double importeTotal,
             String usuarioPrograma, Integer idRucs, String estado);
 }

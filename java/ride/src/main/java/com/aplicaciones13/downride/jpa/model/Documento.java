@@ -29,7 +29,7 @@ import lombok.ToString;
  * 
  */
 @Entity
-@Table(name = "parametros", schema = "public")
+@Table(name = "documentos", schema = "public")
 @Getter
 @Setter
 @ToString
