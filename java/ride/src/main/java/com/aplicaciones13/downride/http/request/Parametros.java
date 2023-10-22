@@ -29,13 +29,25 @@ public class Parametros extends ComonControlador {
     @Autowired
     ParametroServicio parametroServicio;
 
+    /**
+     * Metodo para buscar todos los parametros
+     * 
+     * @param id
+     * @return
+     */
     @GetMapping("/{id}")
     public Parametro getParametro(@PathVariable Integer id) {
         return parametroServicio.findByIdParametros(id);
     }
 
+    /**
+     * Metodo para actualizar un parametro
+     * 
+     * @param parametro
+     * @return
+     */
     @PutMapping("/")
-    public Parametro putParametro(@Valid @RequestBody Parametro valor) {
-        return parametroServicio.updateParametro(valor);
+    public Parametro putParametro(@Valid @RequestBody Parametro parametro) {
+        return parametroServicio.updateParametro(parametro);
     }
 }

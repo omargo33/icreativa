@@ -1,4 +1,4 @@
-package com.aplicaciones13.downride.utilidad;
+package com.aplicaciones13.downride.cliente.utilidades;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
