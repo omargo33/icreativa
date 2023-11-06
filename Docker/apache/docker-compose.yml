@@ -1,0 +1,19 @@
+##
+## Contenedor para levantar una google-analytics falso.
+##
+## con apache para un archivos planos
+## con el puerto 443 para https activo
+##
+version: '3.1'
+
+services:
+  web:
+    image: httpd:2.4
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./html:/usr/local/apache2/htdocs/
+      - ./conf:/usr/local/apache2/conf/
+      - ./logs:/usr/local/apache2/logs/
+    

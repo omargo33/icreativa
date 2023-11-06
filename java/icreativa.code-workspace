@@ -1,0 +1,37 @@
+{
+	"folders": [
+		{
+			"path": "ride"
+		},
+		{
+			"path": "ramv"
+		},
+		{
+			"path": "manager"
+		}
+	],
+	"settings": {
+		"java.compile.nullAnalysis.mode": "automatic",
+		"java.configuration.updateBuildConfiguration": "interactive",
+		"workbench.colorCustomizations": {
+			"activityBar.activeBackground": "#335465",
+			"activityBar.background": "#335465",
+			"activityBar.foreground": "#e7e7e7",
+			"activityBar.inactiveForeground": "#e7e7e799",
+			"activityBarBadge.background": "#2a1523",
+			"activityBarBadge.foreground": "#e7e7e7",
+			"commandCenter.border": "#e7e7e799",
+			"sash.hoverBorder": "#335465",
+			"statusBar.background": "#223843",
+			"statusBar.foreground": "#e7e7e7",
+			"statusBarItem.hoverBackground": "#335465",
+			"statusBarItem.remoteBackground": "#223843",
+			"statusBarItem.remoteForeground": "#e7e7e7",
+			"titleBar.activeBackground": "#223843",
+			"titleBar.activeForeground": "#e7e7e7",
+			"titleBar.inactiveBackground": "#22384399",
+			"titleBar.inactiveForeground": "#e7e7e799"
+		},
+		"peacock.color": "#223843"
+	}
+}

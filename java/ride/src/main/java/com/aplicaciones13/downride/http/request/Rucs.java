@@ -84,11 +84,4 @@ public class Rucs extends ComonControlador {
     public void deleteUserAgent(@PathVariable String ruc) {
         rucServicio.deleteRuc(ruc);
     }
-
-    //TODO subir archivos test
-    @PostMapping("/path={path}")
-    public void getRucByPath(@PathVariable String path) {
-        
-        rucServicio.cargarDocumentos(4, "/home/ovelez/Descargas/0102581709001_Recibidos.txt", this.getClass().getName());
-    } 
 }

@@ -1,0 +1,378 @@
+package com.aplicaciones13.downride.cliente;
+
+import org.junit.Test;
+import org.junit.Before;
+import org.junit.After;
+import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.core.IsNot.not;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.Keys;
+import java.util.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+public class ConsumoWebCliente1 {
+  private WebDriver driver;
+  private Map<String, Object> vars;
+  JavascriptExecutor js;
+  @Before
+  public void setUp() {
+    driver = new ChromeDriver();
+    js = (JavascriptExecutor) driver;
+    vars = new HashMap<String, Object>();
+  }
+  @After
+  public void tearDown() {
+    driver.quit();
+  }
+  @Test
+  public void fullDocumentos() {
+    // Test name: Full Documentos
+    // Step # | name | target | value
+    // 1 | open | /auth/realms/Internet/protocol/openid-connect/auth?response_type=code&client_id=app-tuportal-internet&redirect_uri=https%3A%2F%2Fsrienlinea.sri.gob.ec%2Ftuportal-internet%2FverificaEmail.jspa&state=8950c63a-d38c-48b1-8481-9b9e2b5f56e3&login=true&scope=openid | 
+    driver.get("https://srienlinea.sri.gob.ec/auth/realms/Internet/protocol/openid-connect/auth?response_type=code&client_id=app-tuportal-internet&redirect_uri=https%3A%2F%2Fsrienlinea.sri.gob.ec%2Ftuportal-internet%2FverificaEmail.jspa&state=8950c63a-d38c-48b1-8481-9b9e2b5f56e3&login=true&scope=openid");
+    // 2 | setWindowSize | 1600x868 | 
+    driver.manage().window().setSize(new Dimension(1600, 868));
+    // 3 | click | id=usuario | 
+    driver.findElement(By.id("usuario")).click();
+    // 4 | type | id=usuario | 0102581709001
+    driver.findElement(By.id("usuario")).sendKeys("0102581709001");
+    // 5 | type | id=password | ANDREITA2402
+    driver.findElement(By.id("password")).sendKeys("ANDREITA2402");
+    // 6 | click | id=kc-login | 
+    driver.findElement(By.id("kc-login")).click();
+    // 7 | select | id=frmPrincipal:ano | label=2022
+    {
+      WebElement dropdown = driver.findElement(By.id("frmPrincipal:ano"));
+      dropdown.findElement(By.xpath("//option[. = '2022']")).click();
+    }
+    // 8 | mouseDownAt | id=frmPrincipal:ano | -0.125,0
+    {
+      WebElement element = driver.findElement(By.id("frmPrincipal:ano"));
+      Actions builder = new Actions(driver);
+      builder.moveToElement(element).clickAndHold().perform();
+    }
+    // 9 | mouseMoveAt | id=frmPrincipal:ano | -0.125,0
+    {
+      WebElement element = driver.findElement(By.id("frmPrincipal:ano"));
+      Actions builder = new Actions(driver);
+      builder.moveToElement(element).perform();
+    }
+    // 10 | mouseUpAt | id=frmPrincipal:ano | -0.125,0
+    {
+      WebElement element = driver.findElement(By.id("frmPrincipal:ano"));
+      Actions builder = new Actions(driver);
+      builder.moveToElement(element).release().perform();
+    }
+    // 11 | select | id=frmPrincipal:mes | label=Enero
+    {
+      WebElement dropdown = driver.findElement(By.id("frmPrincipal:mes"));
+      dropdown.findElement(By.xpath("//option[. = 'Enero']")).click();
+    }
+    // 12 | mouseDownAt | id=frmPrincipal:mes | -0.125,0
+    {
+      WebElement element = driver.findElement(By.id("frmPrincipal:mes"));
+      Actions builder = new Actions(driver);
+      builder.moveToElement(element).clickAndHold().perform();
+    }
+    // 13 | mouseMoveAt | id=frmPrincipal:mes | -0.125,0
+    {
+      WebElement element = driver.findElement(By.id("frmPrincipal:mes"));
+      Actions builder = new Actions(driver);
+      builder.moveToElement(element).perform();
+    }
+    // 14 | mouseUpAt | id=frmPrincipal:mes | -0.125,0
+    {
+      WebElement element = driver.findElement(By.id("frmPrincipal:mes"));
+      Actions builder = new Actions(driver);
+      builder.moveToElement(element).release().perform();
+    }
+    // 15 | select | id=frmPrincipal:dia | label=Todos
+    {
+      WebElement dropdown = driver.findElement(By.id("frmPrincipal:dia"));
+      dropdown.findElement(By.xpath("//option[. = 'Todos']")).click();
+    }
+    // 16 | mouseDownAt | id=frmPrincipal:dia | -0.125,0
+    {
+      WebElement element = driver.findElement(By.id("frmPrincipal:dia"));
+      Actions builder = new Actions(driver);
+      builder.moveToElement(element).clickAndHold().perform();
+    }
+    // 17 | mouseMoveAt | id=frmPrincipal:dia | -0.125,0
+    {
+      WebElement element = driver.findElement(By.id("frmPrincipal:dia"));
+      Actions builder = new Actions(driver);
+      builder.moveToElement(element).perform();
+    }
+    // 18 | mouseUpAt | id=frmPrincipal:dia | -0.125,0
+    {
+      WebElement element = driver.findElement(By.id("frmPrincipal:dia"));
+      Actions builder = new Actions(driver);
+      builder.moveToElement(element).release().perform();
+    }
+    // 19 | click | id=btnRecaptcha | 
+    driver.findElement(By.id("btnRecaptcha")).click();
+    // 20 | mouseOver | id=btnRecaptcha | 
+    {
+      WebElement element = driver.findElement(By.id("btnRecaptcha"));
+      Actions builder = new Actions(driver);
+      builder.moveToElement(element).perform();
+    }
+    // 21 | mouseOut | id=btnRecaptcha | 
+    {
+      WebElement element = driver.findElement(By.tagName("body"));
+      Actions builder = new Actions(driver);
+      builder.moveToElement(element, 0, 0).perform();
+    }
+    // 22 | click | css=p | 
+    driver.findElement(By.cssSelector("p")).click();
+    // 23 | select | id=frmPrincipal:ano | label=2023
+    {
+      WebElement dropdown = driver.findElement(By.id("frmPrincipal:ano"));
+      dropdown.findElement(By.xpath("//option[. = '2023']")).click();
+    }
+    // 24 | mouseDownAt | id=frmPrincipal:ano | -0.125,0
+    {
+      WebElement element = driver.findElement(By.id("frmPrincipal:ano"));
+      Actions builder = new Actions(driver);
+      builder.moveToElement(element).clickAndHold().perform();
+    }
+    // 25 | mouseMoveAt | id=frmPrincipal:ano | -0.125,0
+    {
+      WebElement element = driver.findElement(By.id("frmPrincipal:ano"));
+      Actions builder = new Actions(driver);
+      builder.moveToElement(element).perform();
+    }
+    // 26 | mouseUpAt | id=frmPrincipal:ano | -0.125,0
+    {
+      WebElement element = driver.findElement(By.id("frmPrincipal:ano"));
+      Actions builder = new Actions(driver);
+      builder.moveToElement(element).release().perform();
+    }
+    // 27 | select | id=frmPrincipal:mes | label=Febrero
+    {
+      WebElement dropdown = driver.findElement(By.id("frmPrincipal:mes"));
+      dropdown.findElement(By.xpath("//option[. = 'Febrero']")).click();
+    }
+    // 28 | mouseDownAt | id=frmPrincipal:mes | -0.125,0
+    {
+      WebElement element = driver.findElement(By.id("frmPrincipal:mes"));
+      Actions builder = new Actions(driver);
+      builder.moveToElement(element).clickAndHold().perform();
+    }
+    // 29 | mouseMoveAt | id=frmPrincipal:mes | -0.125,0
+    {
+      WebElement element = driver.findElement(By.id("frmPrincipal:mes"));
+      Actions builder = new Actions(driver);
+      builder.moveToElement(element).perform();
+    }
+    // 30 | mouseUpAt | id=frmPrincipal:mes | -0.125,0
+    {
+      WebElement element = driver.findElement(By.id("frmPrincipal:mes"));
+      Actions builder = new Actions(driver);
+      builder.moveToElement(element).release().perform();
+    }
+    // 31 | select | id=frmPrincipal:dia | label=1
+    {
+      WebElement dropdown = driver.findElement(By.id("frmPrincipal:dia"));
+      dropdown.findElement(By.xpath("//option[. = '1']")).click();
+    }
+    // 32 | mouseDownAt | id=frmPrincipal:dia | -0.125,0
+    {
+      WebElement element = driver.findElement(By.id("frmPrincipal:dia"));
+      Actions builder = new Actions(driver);
+      builder.moveToElement(element).clickAndHold().perform();
+    }
+    // 33 | mouseMoveAt | id=frmPrincipal:dia | -0.125,0
+    {
+      WebElement element = driver.findElement(By.id("frmPrincipal:dia"));
+      Actions builder = new Actions(driver);
+      builder.moveToElement(element).perform();
+    }
+    // 34 | mouseUpAt | id=frmPrincipal:dia | -0.125,0
+    {
+      WebElement element = driver.findElement(By.id("frmPrincipal:dia"));
+      Actions builder = new Actions(driver);
+      builder.moveToElement(element).release().perform();
+    }
+    // 35 | click | id=btnRecaptcha | 
+    driver.findElement(By.id("btnRecaptcha")).click();
+    // 36 | mouseOver | id=btnRecaptcha | 
+    {
+      WebElement element = driver.findElement(By.id("btnRecaptcha"));
+      Actions builder = new Actions(driver);
+      builder.moveToElement(element).perform();
+    }
+    // 37 | mouseOut | id=btnRecaptcha | 
+    {
+      WebElement element = driver.findElement(By.tagName("body"));
+      Actions builder = new Actions(driver);
+      builder.moveToElement(element, 0, 0).perform();
+    }
+    // 38 | click | css=p | 
+    driver.findElement(By.cssSelector("p")).click();
+    // 39 | select | id=frmPrincipal:ano | label=2022
+    {
+      WebElement dropdown = driver.findElement(By.id("frmPrincipal:ano"));
+      dropdown.findElement(By.xpath("//option[. = '2022']")).click();
+    }
+    // 40 | mouseDownAt | id=frmPrincipal:ano | -0.125,0
+    {
+      WebElement element = driver.findElement(By.id("frmPrincipal:ano"));
+      Actions builder = new Actions(driver);
+      builder.moveToElement(element).clickAndHold().perform();
+    }
+    // 41 | mouseMoveAt | id=frmPrincipal:ano | -0.125,0
+    {
+      WebElement element = driver.findElement(By.id("frmPrincipal:ano"));
+      Actions builder = new Actions(driver);
+      builder.moveToElement(element).perform();
+    }
+    // 42 | mouseUpAt | id=frmPrincipal:ano | -0.125,0
+    {
+      WebElement element = driver.findElement(By.id("frmPrincipal:ano"));
+      Actions builder = new Actions(driver);
+      builder.moveToElement(element).release().perform();
+    }
+    // 43 | select | id=frmPrincipal:mes | label=Mayo
+    {
+      WebElement dropdown = driver.findElement(By.id("frmPrincipal:mes"));
+      dropdown.findElement(By.xpath("//option[. = 'Mayo']")).click();
+    }
+    // 44 | mouseDownAt | id=frmPrincipal:mes | -0.125,0
+    {
+      WebElement element = driver.findElement(By.id("frmPrincipal:mes"));
+      Actions builder = new Actions(driver);
+      builder.moveToElement(element).clickAndHold().perform();
+    }
+    // 45 | mouseMoveAt | id=frmPrincipal:mes | -0.125,0
+    {
+      WebElement element = driver.findElement(By.id("frmPrincipal:mes"));
+      Actions builder = new Actions(driver);
+      builder.moveToElement(element).perform();
+    }
+    // 46 | mouseUpAt | id=frmPrincipal:mes | -0.125,0
+    {
+      WebElement element = driver.findElement(By.id("frmPrincipal:mes"));
+      Actions builder = new Actions(driver);
+      builder.moveToElement(element).release().perform();
+    }
+    // 47 | select | id=frmPrincipal:dia | label=Todos
+    {
+      WebElement dropdown = driver.findElement(By.id("frmPrincipal:dia"));
+      dropdown.findElement(By.xpath("//option[. = 'Todos']")).click();
+    }
+    // 48 | mouseDownAt | id=frmPrincipal:dia | -0.125,0
+    {
+      WebElement element = driver.findElement(By.id("frmPrincipal:dia"));
+      Actions builder = new Actions(driver);
+      builder.moveToElement(element).clickAndHold().perform();
+    }
+    // 49 | mouseMoveAt | id=frmPrincipal:dia | -0.125,0
+    {
+      WebElement element = driver.findElement(By.id("frmPrincipal:dia"));
+      Actions builder = new Actions(driver);
+      builder.moveToElement(element).perform();
+    }
+    // 50 | mouseUpAt | id=frmPrincipal:dia | -0.125,0
+    {
+      WebElement element = driver.findElement(By.id("frmPrincipal:dia"));
+      Actions builder = new Actions(driver);
+      builder.moveToElement(element).release().perform();
+    }
+    // 51 | mouseDownAt | id=frmPrincipal:cmbTipoComprobante | 231.875,6
+    {
+      WebElement element = driver.findElement(By.id("frmPrincipal:cmbTipoComprobante"));
+      Actions builder = new Actions(driver);
+      builder.moveToElement(element).clickAndHold().perform();
+    }
+    // 52 | mouseMoveAt | id=frmPrincipal:cmbTipoComprobante | 231.875,6
+    {
+      WebElement element = driver.findElement(By.id("frmPrincipal:cmbTipoComprobante"));
+      Actions builder = new Actions(driver);
+      builder.moveToElement(element).perform();
+    }
+    // 53 | mouseUpAt | id=frmPrincipal:cmbTipoComprobante | 231.875,6
+    {
+      WebElement element = driver.findElement(By.id("frmPrincipal:cmbTipoComprobante"));
+      Actions builder = new Actions(driver);
+      builder.moveToElement(element).release().perform();
+    }
+    // 54 | click | id=frmPrincipal:cmbTipoComprobante | 
+    driver.findElement(By.id("frmPrincipal:cmbTipoComprobante")).click();
+    // 55 | select | id=frmPrincipal:cmbTipoComprobante | label=Factura
+    {
+      WebElement dropdown = driver.findElement(By.id("frmPrincipal:cmbTipoComprobante"));
+      dropdown.findElement(By.xpath("//option[. = 'Factura']")).click();
+    }
+    // 56 | mouseDownAt | id=frmPrincipal:cmbTipoComprobante | -0.125,0
+    {
+      WebElement element = driver.findElement(By.id("frmPrincipal:cmbTipoComprobante"));
+      Actions builder = new Actions(driver);
+      builder.moveToElement(element).clickAndHold().perform();
+    }
+    // 57 | mouseMoveAt | id=frmPrincipal:cmbTipoComprobante | -0.125,0
+    {
+      WebElement element = driver.findElement(By.id("frmPrincipal:cmbTipoComprobante"));
+      Actions builder = new Actions(driver);
+      builder.moveToElement(element).perform();
+    }
+    // 58 | mouseUpAt | id=frmPrincipal:cmbTipoComprobante | -0.125,0
+    {
+      WebElement element = driver.findElement(By.id("frmPrincipal:cmbTipoComprobante"));
+      Actions builder = new Actions(driver);
+      builder.moveToElement(element).release().perform();
+    }
+    // 59 | select | id=frmPrincipal:cmbTipoComprobante | label=Todos
+    {
+      WebElement dropdown = driver.findElement(By.id("frmPrincipal:cmbTipoComprobante"));
+      dropdown.findElement(By.xpath("//option[. = 'Todos']")).click();
+    }
+    // 60 | mouseDownAt | id=frmPrincipal:cmbTipoComprobante | -0.125,0
+    {
+      WebElement element = driver.findElement(By.id("frmPrincipal:cmbTipoComprobante"));
+      Actions builder = new Actions(driver);
+      builder.moveToElement(element).clickAndHold().perform();
+    }
+    // 61 | mouseMoveAt | id=frmPrincipal:cmbTipoComprobante | -0.125,0
+    {
+      WebElement element = driver.findElement(By.id("frmPrincipal:cmbTipoComprobante"));
+      Actions builder = new Actions(driver);
+      builder.moveToElement(element).perform();
+    }
+    // 62 | mouseUpAt | id=frmPrincipal:cmbTipoComprobante | -0.125,0
+    {
+      WebElement element = driver.findElement(By.id("frmPrincipal:cmbTipoComprobante"));
+      Actions builder = new Actions(driver);
+      builder.moveToElement(element).release().perform();
+    }
+    // 63 | click | id=btnRecaptcha | 
+    driver.findElement(By.id("btnRecaptcha")).click();
+    // 64 | mouseOver | id=btnRecaptcha | 
+    {
+      WebElement element = driver.findElement(By.id("btnRecaptcha"));
+      Actions builder = new Actions(driver);
+      builder.moveToElement(element).perform();
+    }
+    // 65 | mouseOut | id=btnRecaptcha | 
+    {
+      WebElement element = driver.findElement(By.tagName("body"));
+      Actions builder = new Actions(driver);
+      builder.moveToElement(element, 0, 0).perform();
+    }
+    // 66 | click | css=p | 
+    driver.findElement(By.cssSelector("p")).click();
+  }
+}
