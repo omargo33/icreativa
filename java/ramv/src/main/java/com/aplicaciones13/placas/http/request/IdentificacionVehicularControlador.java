@@ -83,7 +83,7 @@ public class IdentificacionVehicularControlador extends ComonControlador {
             placaServicio.crearPlaca(placa);
 
             IdentificacionesResponse identificacionesResponse = new IdentificacionesResponse();
-            identificacionesResponse.setIndentificacio(ramv);
+            identificacionesResponse.setIndentificacion(ramv);
             identificacionesResponse.setMensaje("Agregado");
             identificacionesResponseLista.add(identificacionesResponse);
         });
@@ -131,7 +131,7 @@ public class IdentificacionVehicularControlador extends ComonControlador {
      * @param estado
      * @return
      */
-    @GetMapping("?estado={estado}")
+    @GetMapping("/estado={estado}")    
     public ResponseEntity<?> getEstadoRamvPorEstado(HttpServletRequest request, @PathVariable String estado) {
         String token = jwtUtils.getJwtFromHeader(request);
         String userName = jwtUtils.getUserNameFromJwtToken(token);

@@ -12,6 +12,6 @@ import lombok.Data;
  */
 @Data
 public class IdentificacionesResponse {
-    String indentificacio;
+    String indentificacion;
     String mensaje;
 }
