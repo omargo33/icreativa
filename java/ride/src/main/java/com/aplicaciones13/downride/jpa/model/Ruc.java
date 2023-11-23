@@ -22,7 +22,7 @@ import lombok.ToString;
 
 /**
  * Clase para expresar en jpa el select SELECT id_rucs, ruc, contrasena, estado,
- * usuario_fecha, usuario_programa, fecha_inicio FROM public.rucs;
+ * usuario_fecha, usuario_programa FROM public.rucs;
  * 
  * Con el indice serial de postgresql en el campo id_rucs
  * 
@@ -61,10 +61,7 @@ public class Ruc implements Serializable {
     @Column(name = "usuario_programa", length = 128)
     private String usuarioPrograma;
 
-    @Column(name = "fecha_inicio")
-    @Temporal(TemporalType.DATE)
-    private Date fechaIncio;
-
+    @NotBlank
     @Column(name = "estado", length = 2)
     private String estado;    
 
