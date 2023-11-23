@@ -17,7 +17,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * Clase para expresar en jpa el SELECT id_dias, dia, id_rucs, usuario_fecha FROM public.dias;
+ * Clase para expresar en jpa el SELECT id_dias, id_rucs, usuario_fecha, dia, mes, anio, estado, observacion FROM public.dias;
  * 
  * Con el indice serial de postgresql en el campo id_dias
  * 
@@ -38,14 +38,25 @@ public class Dia  implements Serializable {
     @Column(name = "id_dias")
     private Integer idDias;
 
-    @Column(name = "dia")
-    @Temporal(TemporalType.DATE)
-    private Date diaConsultado;
-
     @Column(name = "id_rucs")
     private Integer idRucs;
 
     @Column(name = "usuario_fecha")
     @Temporal(TemporalType.TIMESTAMP)
     private Date usuarioFecha;
+
+    @Column(name = "dia", length = 8)
+    private String dia;
+
+    @Column(name = "mes", length = 16)
+    private String mes;
+
+    @Column(name = "anio", length = 4)
+    private String anio;
+
+    @Column(name = "estado", length = 4)
+    private String estado;
+
+    @Column(name = "observacion", length = 256)
+    private String observacion;
 }

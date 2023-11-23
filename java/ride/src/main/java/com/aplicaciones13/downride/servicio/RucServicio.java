@@ -53,6 +53,20 @@ public class RucServicio {
     }
 
     /**
+     * Metodo para buscar todos los rucs, pero que estado sea P para validar el login
+     */
+    public void validarLogin() {
+        List<Ruc> rucs = rucRepositorio.findAllPendientes();
+        for (Ruc ruc : rucs) {
+            
+            
+            
+            ruc.setEstado("A");
+            rucRepositorio.save(ruc);
+        }
+    }
+
+    /**
      * Metodo para buscar por id_rucs
      * 
      * @param idRucs
@@ -69,16 +83,6 @@ public class RucServicio {
      */
     public Ruc findByRuc(String ruc) {
         return rucRepositorio.findByRuc(ruc);
-    }
-
-    /**
-     * Metodo para actualizar fecha inicio con un metodo nativco de postgresql
-     *
-     * @param idRucs
-     * @param fechaInicio
-     */
-    public void updateFechaInicio(Integer idRucs, String fechaInicio) {
-        rucRepositorio.updateFechaInicio(idRucs, fechaInicio);
     }
 
     /**
@@ -104,7 +108,7 @@ public class RucServicio {
         }
 
         ruc.setUsuarioFecha(new Date());
-        ruc.setEstado("A");
+        ruc.setEstado("P");
         ruc.setUsuarioPrograma(programaUsuario);
         return rucRepositorio.save(ruc);
     }
@@ -119,6 +123,8 @@ public class RucServicio {
         ruc.setEstado("X");
         rucRepositorio.save(ruc);
     }
+
+
 
     /**
      * Metodo para cargar los documentos
@@ -167,27 +173,8 @@ public class RucServicio {
         archivo.setPathFile(pathFile);
         archivo.leerAchivos();
         log.error(archivo.getError());
-        cargarFechasConsultadas(idRucs, mapa);
     }
-
-    /**
-     * Metodo para cargar las fechas consultadas
-     * 
-     * @param idRucs
-     * @param mapa
-     */
-    private void cargarFechasConsultadas(int idRucs, Map<String, String> mapa) {
-        for (Map.Entry<String, String> entry : mapa.entrySet()) {
-            Date fecha = convertirStringSimple(entry.getValue());
-            if (!diaRepositorio.existsByIdRucsAndDiaConsultado(idRucs, fecha)) {
-                Dia dia = new Dia();
-                dia.setIdRucs(idRucs);
-                dia.setDiaConsultado(fecha);
-                dia.setUsuarioFecha(new Date());
-                diaRepositorio.save(dia);
-            }
-        }
-    }
+    
 
     /**
      * Metodo para convertir un string a fecha
