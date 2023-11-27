@@ -11,13 +11,17 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotBlank;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 /**
- * Clase para expresar en jpa el SELECT id_dias, id_rucs, usuario_fecha, dia, mes, anio, estado, observacion FROM public.dias;
+ * Clase para expresar en jpa el SELECT id_dias, id_rucs, usuario_fecha, dia,
+ * mes, anio, estado, observacion FROM public.dias;
  * 
  * Con el indice serial de postgresql en el campo id_dias
  * 
@@ -25,12 +29,13 @@ import lombok.ToString;
  * @since 2023-08-13
  * 
  */
- @Entity
- @Table(name = "dias", schema = "public")
- @Getter
- @Setter
- @ToString
-public class Dia  implements Serializable {
+@Entity
+@Table(name = "dias", schema = "public")
+@Getter
+@Setter
+@JsonIgnoreProperties({ "idDias", "usuarioFecha" })
+@ToString
+public class Dia implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -45,12 +50,15 @@ public class Dia  implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date usuarioFecha;
 
+    @NotBlank
     @Column(name = "dia", length = 8)
     private String dia;
 
+    @NotBlank
     @Column(name = "mes", length = 16)
     private String mes;
 
+    @NotBlank
     @Column(name = "anio", length = 4)
     private String anio;
 

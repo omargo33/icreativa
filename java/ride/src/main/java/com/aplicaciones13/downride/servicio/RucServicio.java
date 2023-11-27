@@ -13,10 +13,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.aplicaciones13.downride.cliente.utilidades.Archivo;
-import com.aplicaciones13.downride.jpa.model.Dia;
 import com.aplicaciones13.downride.jpa.model.Documento;
 import com.aplicaciones13.downride.jpa.model.Ruc;
-import com.aplicaciones13.downride.jpa.queries.DiaRepositorio;
 import com.aplicaciones13.downride.jpa.queries.DocumentoRepositorio;
 import com.aplicaciones13.downride.jpa.queries.RucRepositorio;
 
@@ -41,9 +39,6 @@ public class RucServicio {
 
     @Autowired
     private final DocumentoRepositorio documentoRepositorio;
-
-    @Autowired
-    private final DiaRepositorio diaRepositorio;
 
     /**
      * Metodo para buscar todos los rucs, pero que estado sea A
