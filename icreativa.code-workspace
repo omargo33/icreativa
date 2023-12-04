@@ -8,6 +8,9 @@
 		},
 		{
 			"path": "java/manager"
+		},
+		{
+			"path": "java/ride"
 		}
 	],
 	"settings": {

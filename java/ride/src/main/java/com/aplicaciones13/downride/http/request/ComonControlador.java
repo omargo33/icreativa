@@ -147,6 +147,9 @@ public class ComonControlador {
      */
     private Map<String, String> httpMessageNotReadableException(HttpMessageNotReadableException ex) {
         Map<String, String> errors = new HashMap<>();
+
+        log.error("check {}",ex.toString());
+
         if (ex.toString().lastIndexOf("java.util.Date") > 1) {
             errors.put(getControllerMapping(), "E-GS00100-18");
         } else {
