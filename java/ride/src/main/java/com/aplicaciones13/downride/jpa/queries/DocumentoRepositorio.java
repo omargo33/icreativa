@@ -40,10 +40,8 @@ public interface DocumentoRepositorio extends JpaRepository<Documento, Integer> 
      * @param fechaAutorizacionFin
      */
      @Query(value = "SELECT id_documentos, comprobante, serie_comprobante, ruc, razon_social, fecha_emision, fecha_autorizacion, tipo, numero_documento_modificado, identificacion_receptor, clave_acceso, numero_autorizacion, importe_total, usuario_programa, id_rucs, estado, descargado, ride, usuario_fecha FROM public.documentos WHERE identificacion_receptor = ?1 AND fecha_autorizacion BETWEEN ?2 AND ?3 AND estado = 'A'", nativeQuery = true)        
-      List<Documento> findByIdentificacionReceptorAndFechaAutorizacionBetween(String identificacionReceptor, Date fechaAutorizacionInicio, Date fechaAutorizacionFin);  
+        List<Documento> findByIdentificacionReceptorAndFechaAutorizacionBetween(String identificacionReceptor, Date fechaAutorizacionInicio, Date fechaAutorizacionFin);  
      
-
-
     /**
      * Metodo para buscar por idRucs y numeroAutorizacion cuyo estado es A
      *
