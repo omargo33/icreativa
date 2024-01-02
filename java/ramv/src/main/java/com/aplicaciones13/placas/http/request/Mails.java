@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Hidden
 @RestController
 @RequestMapping(value = "/v1/mails")
-public class Mails {
+public class Mails extends ComonControlador{
 
     @Autowired
     private CorreoServicio mailControlServicio;

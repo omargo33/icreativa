@@ -19,7 +19,7 @@ import io.swagger.v3.oas.annotations.Hidden;
 @Hidden
 @RestController
 @RequestMapping(value = "/v1/useragents")
-public class UserAgents {
+public class UserAgents extends ComonControlador {
 
     @Autowired
     private UserAgentServicio userAgentServicio;

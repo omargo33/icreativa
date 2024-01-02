@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +21,8 @@ import com.aplicaciones13.placas.servicio.PlacaServicio;
 import io.swagger.v3.oas.annotations.Hidden;
 
 /**
- * Clase que contiene los metodos para ingreso de placas a consultar y respuestas que el sistema tiene al respecto.
+ * Clase que contiene los metodos para ingreso de placas a consultar y
+ * respuestas que el sistema tiene al respecto.
  * 
  * @autor: omargo33@gmail.com
  * @since: 2023-08-13
@@ -29,7 +31,7 @@ import io.swagger.v3.oas.annotations.Hidden;
 @Hidden
 @RestController
 @RequestMapping(value = "/v1/placas")
-public class Placas {
+public class Placas extends ComonControlador {
 
     @Autowired
     private PlacaServicio placaServicio;
@@ -45,8 +47,11 @@ public class Placas {
     @GetMapping("/eventos/{placa}")
     public List<PlacaEvento> getPlacaEventos(@PathVariable String placa) {
         Placa placaConsulta = placaServicio.findByPlaca(placa);
-
-        return placaEventoServicio.findByIdPlaca(placaConsulta.getIdPlacas());
+        try {
+            return placaEventoServicio.findByIdPlaca(placaConsulta.getIdPlacas());
+        } catch (Exception e) {
+            throw new EmptyResultDataAccessException("", 1);
+        }
     }
 
     @PostMapping("/")
