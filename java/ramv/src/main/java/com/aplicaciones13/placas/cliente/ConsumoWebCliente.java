@@ -172,7 +172,7 @@ public class ConsumoWebCliente {
     Generador.generarEsperaAleatoria(3000, 5300);
     try {
       WebElement sriMatricula = wait
-          .until(ExpectedConditions.presenceOfElementLocated(By.tagName("sri-rutas-matriculacion")));
+          .until(ExpectedConditions.presenceOfElementLocated(By.tagName("sri-muestra-datos-vehiculo")));
       respuesta = sriMatricula.getText();
       log.warn("a analizar respuesta: {}", respuesta);
       if (respuesta.indexOf("Marca") >= 0){
