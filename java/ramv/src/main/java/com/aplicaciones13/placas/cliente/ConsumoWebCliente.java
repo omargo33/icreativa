@@ -174,6 +174,7 @@ public class ConsumoWebCliente {
       WebElement sriMatricula = wait
           .until(ExpectedConditions.presenceOfElementLocated(By.tagName("sri-rutas-matriculacion")));
       respuesta = sriMatricula.getText();
+      log.warn("a analizar respuesta: {}", respuesta);
       if (respuesta.indexOf("Marca") >= 0){
         estado = true;
       }else{
