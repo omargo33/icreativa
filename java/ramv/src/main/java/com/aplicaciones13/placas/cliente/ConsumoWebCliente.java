@@ -39,7 +39,7 @@ public class ConsumoWebCliente {
   private String placa = "I0097902";
   private String urlSRI = "https://srienlinea.sri.gob.ec/sri-en-linea/SriVehiculosWeb/ConsultaValoresPagarVehiculo/Consultas/consultaRubros";
   private String userAgent = "Mozilla/5.0 (Linux; Android 10; CPH2239) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Mobile Safari/537.36";
-  private String chromeDriver= "/home/ovelez/Documentos/clientes/iCreativa/java/placas/src/main/resources/chromedriver";
+  private String chromeDriver= "/home/ovelez/Descargas/chromedriver-106.0.5249.21";
 
   /**
    * Metodo para crear el objeto. 
@@ -87,7 +87,8 @@ public class ConsumoWebCliente {
    */
   private void configurarDriver() {
     System.setProperty("webdriver.chrome.driver",chromeDriver);
-    timeout = Duration.ofSeconds(10);
+    
+    timeout = Duration.ofMillis(15000);
 
     List<String> listaOpciones = new ArrayList<>();
     listaOpciones.add("--remote-allow-origins=*");
@@ -168,13 +169,15 @@ public class ConsumoWebCliente {
    */
   private boolean analizarRespuesta() {
     boolean estado = false;
+
+    //Duration de 10 segundos
     WebDriverWait wait = new WebDriverWait(driver, timeout);
     Generador.generarEsperaAleatoria(3000, 5300);
     try {
       WebElement sriMatricula = wait
-          .until(ExpectedConditions.presenceOfElementLocated(By.tagName("sri-muestra-datos-vehiculo")));
+          .until(ExpectedConditions.presenceOfElementLocated(By.tagName("sri-rutas-matriculacion")));
       respuesta = sriMatricula.getText();
-      log.warn("a analizar respuesta: {}", respuesta);
+      log.warn("A analizar respuesta: {}", respuesta);
       if (respuesta.indexOf("Marca") >= 0){
         estado = true;
       }else{
