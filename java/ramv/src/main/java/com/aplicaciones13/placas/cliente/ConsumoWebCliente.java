@@ -39,15 +39,36 @@ public class ConsumoWebCliente {
   private String placa = "I0097902";
   private String urlSRI = "https://srienlinea.sri.gob.ec/sri-en-linea/SriVehiculosWeb/ConsultaValoresPagarVehiculo/Consultas/consultaRubros";
   private String userAgent = "Mozilla/5.0 (Linux; Android 10; CPH2239) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Mobile Safari/537.36";
-  private String chromeDriver= "/home/ovelez/Descargas/chromedriver-106.0.5249.21";
+  private String chromeDriver = "/home/ovelez/Descargas/chromedriver-106.0.5249.21";
+
+  public static void main(String[] args) {
+    ConsumoWebCliente consumoWebCliente = new ConsumoWebCliente();
+
+    Duration timeout = Duration.ofSeconds(20);
+    consumoWebCliente.setTimeout(timeout);
+    consumoWebCliente.setUrlSRI(
+        "https://srienlinea.sri.gob.ec/sri-en-linea/SriVehiculosWeb/ConsultaValoresPagarVehiculo/Consultas/consultaRubros");
+
+    consumoWebCliente
+        .setUserAgent("Mozilla/5.0 (Linux; Android 10; CPH2239) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Mobile Safari/537.36");
+    consumoWebCliente.setPlaca("I0097902");
+
+    consumoWebCliente.setChromeDriver("/home/ovelez/Descargas/chromedriver-106.0.5249.21");
+
+    if (consumoWebCliente.ejecutar()) {
+      log.info("Respuesta: {}", consumoWebCliente.getRespuesta());
+    } else {
+      log.warn("Respuesta Error: {}", consumoWebCliente.getRespuesta());
+    }
+  }
 
   /**
-   * Metodo para crear el objeto. 
+   * Metodo para crear el objeto.
    * 
    * Para ejecuar el proceso String[] args
    */
   public void ejecutarTest() {
-    ConsumoWebCliente consumoWebCliente = new ConsumoWebCliente();    
+    ConsumoWebCliente consumoWebCliente = new ConsumoWebCliente();
     boolean estado = consumoWebCliente.ejecutar();
     log.info("Estado: {}", estado);
     log.info("Respuesta: {}", consumoWebCliente.getRespuesta());
@@ -86,8 +107,8 @@ public class ConsumoWebCliente {
    * Elimina las cookies
    */
   private void configurarDriver() {
-    System.setProperty("webdriver.chrome.driver",chromeDriver);
-    
+    System.setProperty("webdriver.chrome.driver", chromeDriver);
+
     timeout = Duration.ofMillis(15000);
 
     List<String> listaOpciones = new ArrayList<>();
@@ -100,6 +121,7 @@ public class ConsumoWebCliente {
     ChromeOptions options = new ChromeOptions();
     options.addArguments(listaOpciones);
     options.setPageLoadStrategy(PageLoadStrategy.NORMAL);
+
     options.setHeadless(true);
 
     driver = new ChromeDriver(options);
@@ -147,17 +169,14 @@ public class ConsumoWebCliente {
    * Caso contrario devuelve false
    */
   private boolean isBotonBusquedaClick(WebDriver driver) {
-    List<WebElement> buttons = driver.findElements(By.tagName("button"));
-    for (int i = 0; i < buttons.size(); i++) {
-      String texto = buttons.get(i).getAttribute("outerHTML");
-      int busqueda = texto.indexOf("Consultar");
-      if (busqueda != -1) {
-        WebElement element = buttons.get(i);
-        element.click();
-        return true;
-      }
+    try {    
+      driver.findElement(By.cssSelector(".cyan-btn > .ui-button-text")).click();
+      return true;
+    } catch (Exception e) {
+      log.warn("No se puede hacer clic a la busqueda {}", e.toString());
     }
     return false;
+    
   }
 
   /**
@@ -170,7 +189,7 @@ public class ConsumoWebCliente {
   private boolean analizarRespuesta() {
     boolean estado = false;
 
-    //Duration de 10 segundos
+    // Duration de 10 segundos
     WebDriverWait wait = new WebDriverWait(driver, timeout);
     Generador.generarEsperaAleatoria(3000, 5300);
     try {
@@ -178,9 +197,9 @@ public class ConsumoWebCliente {
           .until(ExpectedConditions.presenceOfElementLocated(By.tagName("sri-rutas-matriculacion")));
       respuesta = sriMatricula.getText();
       log.warn("A analizar respuesta: {}", respuesta);
-      if (respuesta.indexOf("Marca") >= 0){
+      if (respuesta.indexOf("Marca") >= 0) {
         estado = true;
-      }else{
+      } else {
         respuesta = "No se encontro la Marca";
       }
     } catch (Exception e2) {
