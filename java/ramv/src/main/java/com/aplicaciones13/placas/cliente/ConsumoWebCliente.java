@@ -146,7 +146,7 @@ public class ConsumoWebCliente {
    */
   private boolean buscarPlaca() {
     driver.get(urlSRI);
-    driver.findElement(By.id("busqueda")).click();
+    // driver.findElement(By.id("busqueda")).click();
     driver.findElement(By.id("busqueda")).sendKeys(placa);
 
     Generador.generarEsperaAleatoria(3000, 5300);
