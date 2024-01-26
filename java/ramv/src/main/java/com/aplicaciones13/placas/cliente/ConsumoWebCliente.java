@@ -151,6 +151,7 @@ public class ConsumoWebCliente {
     try {
       // driver.findElement(By.id("busqueda")).click();
       driver.findElement(By.id("busqueda")).sendKeys(placa);
+      driver.findElement(By.id("busqueda")).sendKeys(Keys.ENTER);
       Generador.generarEsperaAleatoria(3000, 5300);
       if (isBotonBusquedaClick(driver)) {
         return true;
