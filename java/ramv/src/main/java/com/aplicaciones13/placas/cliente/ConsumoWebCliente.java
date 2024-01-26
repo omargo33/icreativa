@@ -147,8 +147,8 @@ public class ConsumoWebCliente {
    */
   private boolean buscarPlaca() {
     driver.get(urlSRI);
-    try{
-    // driver.findElement(By.id("busqueda")).click();
+    try {
+      // driver.findElement(By.id("busqueda")).click();
       driver.findElement(By.id("busqueda")).sendKeys(placa);
       Generador.generarEsperaAleatoria(3000, 5300);
       if (isBotonBusquedaClick(driver)) {
@@ -174,10 +174,18 @@ public class ConsumoWebCliente {
    */
   private boolean isBotonBusquedaClick(WebDriver driver) {
     try {
-      driver.findElement(By.cssSelector(".cyan-btn > .ui-button-text")).click();
-      return true;
+      List<WebElement> buttons = driver.findElements(By.tagName("button"));
+      for (int i = 0; i < buttons.size(); i++) {
+        String texto = buttons.get(i).getAttribute("outerHTML");
+        int busqueda = texto.indexOf("Consultar");
+        if (busqueda != -1) {
+          WebElement element = buttons.get(i);
+          element.click();
+          return true;
+        }
+      }
     } catch (Exception e) {
-      log.warn("No se puede hacer clic a la busqueda {}", e.toString());
+      log.warn("No se puede ejecutar el boton de busqueda {}", e.toString());
     }
     return false;
 
