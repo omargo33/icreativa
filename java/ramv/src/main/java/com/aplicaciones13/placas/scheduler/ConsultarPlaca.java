@@ -35,7 +35,7 @@ public class ConsultarPlaca {
      * Cada 45 minutos, de 8am a 7pm, de lunes a sabado.
      */
     //@Scheduled(cron = "0 */45 8-19 * * MON-SAT", zone = "GMT-5")
-    @Scheduled(cron = "0 0/15 * * * *", zone = "GMT-5")
+    @Scheduled(cron = "0 0/10 * * * *", zone = "GMT-5")
     public void ejecutarWeb() {
         consultarPlacaServicio.consultarPlacasEncontradas("E");
     }    

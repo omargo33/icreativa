@@ -50,7 +50,8 @@ public class ConsumoWebCliente {
         "https://srienlinea.sri.gob.ec/sri-en-linea/SriVehiculosWeb/ConsultaValoresPagarVehiculo/Consultas/consultaRubros");
 
     consumoWebCliente
-        .setUserAgent("Mozilla/5.0 (Linux; Android 10; CPH2239) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Mobile Safari/537.36");
+        .setUserAgent(
+            "Mozilla/5.0 (Linux; Android 10; CPH2239) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Mobile Safari/537.36");
     consumoWebCliente.setPlaca("I0097902");
 
     consumoWebCliente.setChromeDriver("/home/ovelez/Descargas/chromedriver-106.0.5249.21");
@@ -154,7 +155,8 @@ public class ConsumoWebCliente {
         return true;
       }
     } catch (Exception e) {
-      log.warn("No se imput buscar {}", e.toString());
+
+      log.warn("No se puede cargar datos a la busqueda {}", e.toString());
     }
 
     log.warn("La placa {} no habilita el pago de matricula", placa);
@@ -171,14 +173,14 @@ public class ConsumoWebCliente {
    * Caso contrario devuelve false
    */
   private boolean isBotonBusquedaClick(WebDriver driver) {
-    try {    
+    try {
       driver.findElement(By.cssSelector(".cyan-btn > .ui-button-text")).click();
       return true;
     } catch (Exception e) {
       log.warn("No se puede hacer clic a la busqueda {}", e.toString());
     }
     return false;
-    
+
   }
 
   /**
