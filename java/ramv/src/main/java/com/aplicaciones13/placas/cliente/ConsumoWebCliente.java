@@ -147,16 +147,15 @@ public class ConsumoWebCliente {
    */
   private boolean buscarPlaca() {
     driver.get(urlSRI);
+    try{
     // driver.findElement(By.id("busqueda")).click();
-    try {
       driver.findElement(By.id("busqueda")).sendKeys(placa);
-
       Generador.generarEsperaAleatoria(3000, 5300);
-
       if (isBotonBusquedaClick(driver)) {
         return true;
       }
     } catch (Exception e) {
+
       log.warn("No se puede cargar datos a la busqueda {}", e.toString());
     }
 
