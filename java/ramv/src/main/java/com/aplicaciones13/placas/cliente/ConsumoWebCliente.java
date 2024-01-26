@@ -117,6 +117,7 @@ public class ConsumoWebCliente {
     listaOpciones.add("ignore-certificate-errors");
     listaOpciones.add("--disk-cache-size=0");
     listaOpciones.add("--window-size=1600,862");
+    listaOpciones.add("--enable-javascript");
     listaOpciones.add("--user-agent=" + userAgent);
 
     ChromeOptions options = new ChromeOptions();
