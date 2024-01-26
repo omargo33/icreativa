@@ -153,15 +153,20 @@ public class ConsultarPlacaServicio {
      * @param listaPlacas
      */
     private void consumirPlacaWeb(List<Placa> listaPlacas) {
+        int i=0;
+        int iMax=0;
         List<Integer> listaIdParametros = List.of(4, 5);
+        List<UserAgent> listaUserAgents = userAgentServicio.findByAll();
+        iMax = listaUserAgents.size();
         Map<Integer, Parametro> mapParametros = parametroServicio.findByIdParametrosIn(listaIdParametros);
+
 
         Duration timeout = Duration.ofSeconds(mapParametros.get(5).getValor1().intValue());
         consumoWebCliente.setTimeout(timeout);
         consumoWebCliente.setUrlSRI(mapParametros.get(4).getTexto1());
 
         for (Placa placa : listaPlacas) {
-            UserAgent userAgent = userAgentServicio.buscarDescripcionRandom();
+            UserAgent userAgent = listaUserAgents.get(i);
             consumoWebCliente.setUserAgent(userAgent.getDescripcion());
             consumoWebCliente.setPlaca(placa.getRamvPlaca());
 
@@ -176,6 +181,10 @@ public class ConsultarPlacaServicio {
             } else {
                 userAgentServicio.incrementarEjecucionIncorrecta(userAgent.getIdUserAgent());
                 placaEventoServicio.crearPlacaEvento(placa.getIdPlacas(), consumoWebCliente.getRespuesta(), "P");
+            }
+            i++;
+            if (i==iMax) {
+                i=0;
             }
         }
     }

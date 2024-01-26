@@ -1,5 +1,7 @@
 package com.aplicaciones13.placas.servicio;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,10 @@ public class UserAgentServicio {
      */
     public UserAgent findByIdUserAgent(int idUserAgent) {
         return userAgentRepositorio.findByIdUserAgent(idUserAgent);
+    }
+
+    public List<UserAgent> findByAll() {
+        return userAgentRepositorio.findAll();
     }
 
     /**

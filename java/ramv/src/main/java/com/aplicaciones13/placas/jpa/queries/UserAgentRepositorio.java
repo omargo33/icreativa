@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import com.aplicaciones13.placas.jpa.model.UserAgent;
+import java.util.List;
 
 /**
  * Repositorio para la tabla user_agent
@@ -24,6 +25,11 @@ public interface UserAgentRepositorio extends JpaRepository<UserAgent, Integer> 
      * Metodo para buscar por id_user_agent
      */
     UserAgent findByIdUserAgent(Integer id);
+
+    /**
+     * Metodo para buscar todos los user agent
+     */
+    List<UserAgent> findAll();
 
     /**
      * Metodo incrementar el contador de ejecucion_correcta con un query nativo
