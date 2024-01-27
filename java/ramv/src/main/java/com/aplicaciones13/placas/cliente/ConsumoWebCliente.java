@@ -57,7 +57,7 @@ public class ConsumoWebCliente {
     consumoWebCliente.setChromeDriver("/home/ovelez/Descargas/chromedriver-106.0.5249.21");
 
     if (consumoWebCliente.ejecutar()) {
-      log.info("Respuesta: {}", consumoWebCliente.getRespuesta());
+      log.warn("Respuesta: {}", consumoWebCliente.getRespuesta());
     } else {
       log.warn("Respuesta Error: {}", consumoWebCliente.getRespuesta());
     }
