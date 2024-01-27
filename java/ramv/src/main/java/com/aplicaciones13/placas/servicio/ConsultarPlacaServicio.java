@@ -68,7 +68,7 @@ public class ConsultarPlacaServicio {
         List<Placa> listaPlacas = placaServicio.findByEstado(estado);
 
         if (listaPlacas.isEmpty()) {
-            log.info("No hay placas pendientes de trabajo");
+            log.warn("No hay placas pendientes de trabajo");
             return;
         }
 
