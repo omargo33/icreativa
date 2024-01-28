@@ -150,15 +150,18 @@ public class ConsumoWebCliente {
   private boolean buscarPlaca() {
     driver.get(urlSRI);
     try {
-      // driver.findElement(By.id("busqueda")).click();
       driver.findElement(By.id("busqueda")).sendKeys(placa);
       driver.findElement(By.id("busqueda")).sendKeys(Keys.ENTER);
       Generador.generarEsperaAleatoria(3000, 5300);
-      if (isBotonBusquedaClick(driver)) {
-        return true;
-      }
-    } catch (Exception e) {
 
+      for (int i = 0; i < 3; i++) {
+        log.warn("Intento de busqueda: {}", i);
+        if (isBotonBusquedaClick(driver)) {
+          return true;
+        }
+      }
+
+    } catch (Exception e) {
       log.warn("No se puede cargar datos a la busqueda {}", e.toString());
     }
 
@@ -191,7 +194,6 @@ public class ConsumoWebCliente {
       log.warn("No se puede ejecutar el boton de busqueda {}", e.toString());
     }
     return false;
-
   }
 
   /**
@@ -204,7 +206,6 @@ public class ConsumoWebCliente {
   private boolean analizarRespuesta() {
     boolean estado = false;
 
-    // Duration de 10 segundos
     WebDriverWait wait = new WebDriverWait(driver, timeout);
     Generador.generarEsperaAleatoria(3000, 5300);
     try {
