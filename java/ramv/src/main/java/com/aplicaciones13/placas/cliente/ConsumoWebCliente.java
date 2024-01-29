@@ -2,18 +2,18 @@ package com.aplicaciones13.placas.cliente;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.io.File;
 import java.time.Duration;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeDriverLogLevel;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.aplicaciones13.placas.cliente.utilidades.Generador;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -37,31 +37,15 @@ public class ConsumoWebCliente {
   private WebDriver driver;
   private Duration timeout;
   private String respuesta;
-  private String placa = "I0097902";
+  private String placa = "I0098705";
   private String urlSRI = "https://srienlinea.sri.gob.ec/sri-en-linea/SriVehiculosWeb/ConsultaValoresPagarVehiculo/Consultas/consultaRubros";
-  private String userAgent = "Mozilla/5.0 (Linux; Android 10; CPH2239) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Mobile Safari/537.36";
-  private String chromeDriver = "/home/ovelez/Descargas/chromedriver-106.0.5249.21";
+  private String userAgent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.5735.90 Safari/537.36";
+  private String chromeDriver = "/home/ovelez/Descargas/chromedriver-114.0.5735.90";
+  private String extensionPath = "/home/ovelez/Descargas/Buster-Captcha-Solver-for-Humans.crx";
 
   public static void main(String[] args) {
     ConsumoWebCliente consumoWebCliente = new ConsumoWebCliente();
-
-    Duration timeout = Duration.ofSeconds(20);
-    consumoWebCliente.setTimeout(timeout);
-    consumoWebCliente.setUrlSRI(
-        "https://srienlinea.sri.gob.ec/sri-en-linea/SriVehiculosWeb/ConsultaValoresPagarVehiculo/Consultas/consultaRubros");
-
-    consumoWebCliente
-        .setUserAgent(
-            "Mozilla/5.0 (Linux; Android 10; CPH2239) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Mobile Safari/537.36");
-    consumoWebCliente.setPlaca("I0097902");
-
-    consumoWebCliente.setChromeDriver("/home/ovelez/Descargas/chromedriver-106.0.5249.21");
-
-    if (consumoWebCliente.ejecutar()) {
-      log.warn("Respuesta: {}", consumoWebCliente.getRespuesta());
-    } else {
-      log.warn("Respuesta Error: {}", consumoWebCliente.getRespuesta());
-    }
+    consumoWebCliente.ejecutarTest();    
   }
 
   /**
@@ -69,8 +53,9 @@ public class ConsumoWebCliente {
    * 
    * Para ejecuar el proceso String[] args
    */
-  public void ejecutarTest() {
+  private void ejecutarTest() {
     ConsumoWebCliente consumoWebCliente = new ConsumoWebCliente();
+    consumoWebCliente.setTimeout(Duration.ofSeconds(20));
     boolean estado = consumoWebCliente.ejecutar();
     log.info("Estado: {}", estado);
     log.info("Respuesta: {}", consumoWebCliente.getRespuesta());
@@ -85,13 +70,15 @@ public class ConsumoWebCliente {
    */
   public boolean ejecutar() {
     boolean estado = false;
-    configurarDriver();
-    if (buscarPlaca()) {
-      Generador.generarEsperaAleatoria(3000, 5500);
-      estado = analizarRespuesta();
+    if (configurarDriver()) {
+      if (ingresarPlaca()) {
+        if (presionarBotonBusqueda()) {
+          eludirReCaptcha();
+          estado = analizarRespuesta();
+        }
+      }
+      tearDown();
     }
-    Generador.generarEsperaAleatoria(3000, 5500);
-    tearDown();
     return estado;
   }
 
@@ -108,90 +95,108 @@ public class ConsumoWebCliente {
    * Administra el tiempo de espera implicito
    * Elimina las cookies
    */
-  private void configurarDriver() {
-    System.setProperty("webdriver.chrome.driver", chromeDriver);
+  private boolean configurarDriver() {
+    try {
+      System.setProperty("webdriver.chrome.driver", chromeDriver);
+      timeout = Duration.ofMillis(15000);
 
-    timeout = Duration.ofMillis(15000);
+      List<String> listaOpciones = new ArrayList<>();
+      listaOpciones.add("--remote-allow-origins=*");
+      listaOpciones.add("--ignore-certificate-errors");
+      // listaOpciones.add("--disk-cache-size=0");
+      listaOpciones.add("--disable-web-security");
+      listaOpciones.add("--window-size=1600,862");
+      //listaOpciones.add("--enable-javascript");
+      listaOpciones.add("--disable-popup-blocking");
+      listaOpciones.add("--user-agent=" + userAgent);
+      listaOpciones.add("--no-sandbox");
+      //listaOpciones.add("--user-data-dir=/home/ovelez/.config/google-chrome");
+      //listaOpciones.add("--profile-directory=Profile 1");
 
-    List<String> listaOpciones = new ArrayList<>();
-    listaOpciones.add("--remote-allow-origins=*");
-    listaOpciones.add("ignore-certificate-errors");
-    listaOpciones.add("--disk-cache-size=0");
-    listaOpciones.add("--window-size=1600,862");
-    listaOpciones.add("--enable-javascript");
-    listaOpciones.add("--user-agent=" + userAgent);
+      ChromeOptions options = new ChromeOptions();
+      options.addArguments(listaOpciones);
+      options.setPageLoadStrategy(PageLoadStrategy.EAGER);
+      //options.setHeadless(true);
+      
 
-    ChromeOptions options = new ChromeOptions();
-    options.addArguments(listaOpciones);
-    options.setPageLoadStrategy(PageLoadStrategy.NORMAL);
+      try {
+        options.addExtensions(new File(extensionPath));
+      } catch (Exception e) {
+        log.warn("No se puede cargar la extension {}", e.toString());
+      }
 
-    options.setHeadless(true);
-
-    driver = new ChromeDriver(options);
-    driver.manage().window().setSize(new Dimension(1600, 862));
-    driver.manage().timeouts().implicitlyWait(timeout);
-    driver.manage().deleteAllCookies();
+      driver = new ChromeDriver(options);
+      driver.manage().window().setSize(new Dimension(1600, 862));
+      driver.manage().timeouts().implicitlyWait(timeout);
+      driver.manage().deleteAllCookies();
+      driver.get(urlSRI);
+    } catch (Exception e) {
+      respuesta = String.format("No se ha podido crear la configuraicon del driver %s", e.toString());
+      return false;
+    }
+    return true;
   }
 
   /**
-   * Metodo para ejecutar la busqueda de la placa.
+   * Metodo para ingresar la placa.
    * 
-   * Carga la pagina del SRI.
-   * Posiciona sobre el campo de busqueda
-   * Ingresa la placa en el campo de busqueda
-   * Espera un tiempo aleatorio entre 3 y 5 segundos
+   * @return
+   */
+  private boolean ingresarPlaca() {
+    try {
+      Generador.generarEsperaAleatoria(1000, 4000);
+      driver.findElement(By.id("busqueda")).sendKeys(placa);
+      Generador.generarEsperaAleatoria(400, 1300);
+      driver.findElement(By.id("busqueda")).sendKeys(Keys.ENTER);
+      return true;
+    } catch (Exception e) {
+      respuesta = String.format("No se ha podido ingresar la placa %s", placa);
+    }
+    return false;
+  }
+
+  /**
+   * Metodo para presionar el boton de busqueda.
    * 
-   * Busca y presiona el boton de busqueda
+   * Intenta presionar el boton de busqueda 3 veces
    * Si el boton de busqueda se ejecuto correctamente devuelve true
    * Caso contrario
    * Asigna el mensaje de error y retorna false
    * 
    */
-  private boolean buscarPlaca() {
-    driver.get(urlSRI);
-    try {
-      driver.findElement(By.id("busqueda")).sendKeys(placa);
-      driver.findElement(By.id("busqueda")).sendKeys(Keys.ENTER);
-      Generador.generarEsperaAleatoria(3000, 5300);
-
-      for (int i = 0; i < 3; i++) {
-        log.warn("Intento de busqueda: {}", i);
-        if (isBotonBusquedaClick(driver)) {
-          return true;
-        }
+  private boolean presionarBotonBusqueda() {
+    for (int i = 0; i < 3; i++) {
+      if (isBotonBusquedaObligadoClick()) {
+        return true;
       }
-
-    } catch (Exception e) {
-      log.warn("No se puede cargar datos a la busqueda {}", e.toString());
     }
-
-    log.warn("La placa {} no habilita el pago de matricula", placa);
-    respuesta = "Boton de busqueda no encontrado";
     return false;
   }
 
   /**
-   * Metodo para buscar el boton de busqueda y ejecutarlo.
+   * Metodo para ejecutar el boton de busqueda.
    * 
-   * Busca todos los elementos en la pagina que son botones
-   * y busca el boton que tiene el texto "Consultar"
-   * Si encuentra el boton, lo ejecuta y devuelve true
-   * Caso contrario devuelve false
+   * 
+   * @param driver
+   * @return
    */
-  private boolean isBotonBusquedaClick(WebDriver driver) {
+  private boolean isBotonBusquedaObligadoClick() {
+    Generador.generarEsperaAleatoria(1000, 4000);
     try {
       List<WebElement> buttons = driver.findElements(By.tagName("button"));
       for (int i = 0; i < buttons.size(); i++) {
         String texto = buttons.get(i).getAttribute("outerHTML");
         int busqueda = texto.indexOf("Consultar");
         if (busqueda != -1) {
-          WebElement element = buttons.get(i);
-          element.click();
-          return true;
+          WebElement yourButton = buttons.get(i);
+          if (yourButton.isEnabled()) {            
+            yourButton.click();
+            return true;
+          }
         }
       }
     } catch (Exception e) {
-      log.warn("No se puede ejecutar el boton de busqueda {}", e.toString());
+      respuesta = String.format("No se puede ejecutar el boton de busqueda %s", e.toString());
     }
     return false;
   }
@@ -204,26 +209,43 @@ public class ConsumoWebCliente {
    * @return
    */
   private boolean analizarRespuesta() {
-    boolean estado = false;
-
     WebDriverWait wait = new WebDriverWait(driver, timeout);
-    Generador.generarEsperaAleatoria(3000, 5300);
+    Generador.generarEsperaAleatoria(2000, 5300);
     try {
       WebElement sriMatricula = wait
           .until(ExpectedConditions.presenceOfElementLocated(By.tagName("sri-rutas-matriculacion")));
       respuesta = sriMatricula.getText();
-      log.warn("A analizar respuesta: {}", respuesta);
+      log.warn("Respuesta a analizar: {}", respuesta);
       if (respuesta.indexOf("Marca") >= 0) {
-        estado = true;
+        return true;
       } else {
-        respuesta = "No se encontro la Marca";
+        respuesta = "No se encontro la Marca del vehiculo";
       }
     } catch (Exception e2) {
-      respuesta = e2.toString();
-      log.warn("No se puede leer la respuesta de la consulta captcha {}", e2.toString());
+      respuesta = String.format("No se encontro la Marca del vehiculo %s", e2.toString());
     }
-    return estado;
+    return false;
+  }
 
+  /**
+   * Metodo para eludir el reCaptcha.
+   * 
+   * Cambia al frame del reCaptcha
+   * Pone tiempo de espera aleatorio
+   * busca el boton de ayuda de paso de reCaptcha
+   * Pone tiempo de espera aleatorio
+   * Cambia al frame por defecto
+   */
+  private void eludirReCaptcha() {
+    try {
+      driver.switchTo().frame(2);
+      Generador.generarEsperaAleatoria(900, 2000);
+      driver.findElement(By.cssSelector(".help-button-holder")).click();
+      Generador.generarEsperaAleatoria(900,2000);
+      driver.switchTo().defaultContent();
+    } catch (Exception e) {
+      log.warn("No se puede eludir el reCaptcha {}", e.toString());
+    }
   }
 
   /**
