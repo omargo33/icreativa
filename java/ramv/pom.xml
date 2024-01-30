@@ -21,6 +21,8 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
+
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -142,6 +144,15 @@
 			<groupId>de.codecentric</groupId>
 			<artifactId>spring-boot-admin-starter-client</artifactId>
 			<version>2.5.2</version>
+		</dependency>
+
+		<!-- dependencia de 2 captcha -->
+		<dependency>
+			<groupId>com.twocaptcha</groupId>
+			<artifactId>2captcha-java</artifactId>
+			<version>1.1.1</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/resources/2captcha-java-1.1.1.jar</systemPath>
 		</dependency>
 	</dependencies>
 	<build>

@@ -17,6 +17,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
+import com.twocaptcha.TwoCaptcha;
+import com.twocaptcha.captcha.ReCaptcha;
+
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.PageLoadStrategy;
@@ -32,7 +35,7 @@ import org.openqa.selenium.PageLoadStrategy;
 @Getter
 @Setter
 @Slf4j
-public class ConsumoWebCliente {
+public class ConsumoWebCliente2Captcha {
   private WebDriver driver;
   private Duration timeout;
   private String respuesta;
@@ -42,9 +45,12 @@ public class ConsumoWebCliente {
   private String chromeDriver = "/home/ovelez/Descargas/chromedriver-114.0.5735.90";
   private String extensionPath = "/home/ovelez/Descargas/Buster-Captcha-Solver-for-Humans.crx";
 
+  private String apiKey = "bd7a2552ab5ad2bbd5e2f9f2e166ab24";
+  private String siteKey = "6Lc6rokUAAAAAJBG2M1ZM1LIgJ85DwbSNNjYoLDk";
+
   public static void main(String[] args) {
-    ConsumoWebCliente consumoWebCliente = new ConsumoWebCliente();
-    consumoWebCliente.ejecutarTest();    
+    ConsumoWebCliente2Captcha consumoWebCliente2Captcha = new ConsumoWebCliente2Captcha();
+    consumoWebCliente2Captcha.ejecutarTest();
   }
 
   /**
@@ -53,11 +59,11 @@ public class ConsumoWebCliente {
    * Para ejecuar el proceso String[] args
    */
   private void ejecutarTest() {
-    ConsumoWebCliente consumoWebCliente = new ConsumoWebCliente();
-    consumoWebCliente.setTimeout(Duration.ofSeconds(20));
-    boolean estado = consumoWebCliente.ejecutar();
+    ConsumoWebCliente2Captcha consumoWebCliente2Captcha = new ConsumoWebCliente2Captcha();
+    consumoWebCliente2Captcha.setTimeout(Duration.ofSeconds(20));
+    boolean estado = consumoWebCliente2Captcha.ejecutar();
     log.info("Estado: {}", estado);
-    log.info("Respuesta: {}", consumoWebCliente.getRespuesta());
+    log.info("Respuesta: {}", consumoWebCliente2Captcha.getRespuesta());
   }
 
   /**
@@ -105,17 +111,17 @@ public class ConsumoWebCliente {
       // listaOpciones.add("--disk-cache-size=0");
       listaOpciones.add("--disable-web-security");
       listaOpciones.add("--window-size=1600,862");
-      //listaOpciones.add("--enable-javascript");
+      // listaOpciones.add("--enable-javascript");
       listaOpciones.add("--disable-popup-blocking");
       listaOpciones.add("--user-agent=" + userAgent);
       listaOpciones.add("--no-sandbox");
-      //listaOpciones.add("--user-data-dir=/home/ovelez/.config/google-chrome");
-      //listaOpciones.add("--profile-directory=Profile 1");
+      // listaOpciones.add("--user-data-dir=/home/ovelez/.config/google-chrome");
+      // listaOpciones.add("--profile-directory=Profile 1");
 
       ChromeOptions options = new ChromeOptions();
       options.addArguments(listaOpciones);
       options.setPageLoadStrategy(PageLoadStrategy.EAGER);
-      options.setHeadless(true);      
+      options.setHeadless(true);
 
       try {
         options.addExtensions(new File(extensionPath));
@@ -187,7 +193,7 @@ public class ConsumoWebCliente {
         int busqueda = texto.indexOf("Consultar");
         if (busqueda != -1) {
           WebElement yourButton = buttons.get(i);
-          if (yourButton.isEnabled()) {            
+          if (yourButton.isEnabled()) {
             yourButton.click();
             return true;
           }
@@ -239,10 +245,34 @@ public class ConsumoWebCliente {
       driver.switchTo().frame(2);
       Generador.generarEsperaAleatoria(900, 2000);
       driver.findElement(By.cssSelector(".help-button-holder")).click();
-      Generador.generarEsperaAleatoria(900,2000);
+      Generador.generarEsperaAleatoria(900, 2000);
       driver.switchTo().defaultContent();
     } catch (Exception e) {
       log.warn("No se puede eludir el reCaptcha {}", e.toString());
+    }
+  }
+
+  /**
+   * Metodo para resolver el captcha.
+   */
+  /**
+   * 
+   * @param apiKey bd7a2552ab5ad2bbd5e2f9f2e166ab24
+   * @param urlSRI https://srienlinea.sri.gob.ec/sri-en-linea/SriVehiculosWeb/ConsultaValoresPagarVehiculo/Consultas/consultaRubros
+   * @param siteKey 6Lc6rokUAAAAAJBG2M1ZM1LIgJ85DwbSNNjYoLDk
+   */
+  private void resolverCaptcha(String apiKey, String urlSRI, String siteKey ) {
+    TwoCaptcha solver = new TwoCaptcha(apiKey);
+
+    ReCaptcha captcha = new ReCaptcha();
+    captcha.setSiteKey(siteKey);
+    captcha.setUrl(urlSRI);
+    captcha.setVersion("v3");
+    try {
+      solver.solve(captcha);
+      System.out.println("Captcha solved: " + captcha.getCode());
+    } catch (Exception e) {
+      System.out.println("Error occurred: " + e.getMessage());
     }
   }
 

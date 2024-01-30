@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 
 import javax.transaction.Transactional;
@@ -92,7 +93,9 @@ public class ConsultarPlacaServicio {
      * 
      */
     public void consumirPlacaAntiguas() {
-        List<Integer> listaIdParametros = List.of(6, 7);
+        //TODO
+        List<Integer> listaIdParametros = new ArrayList<>();
+        // List<Integer> listaIdParametros = List.of(6, 7);
         Map<Integer, Parametro> mapParametros = parametroServicio.findByIdParametrosIn(listaIdParametros);
 
         Calendar calendar = Calendar.getInstance();
@@ -155,7 +158,9 @@ public class ConsultarPlacaServicio {
     private void consumirPlacaWeb(List<Placa> listaPlacas) {
         int i=0;
         int iMax=0;
-        List<Integer> listaIdParametros = List.of(4, 5, 8);
+        //TODO
+        List<Integer> listaIdParametros = new ArrayList<>();
+        //List<Integer> listaIdParametros = List.of(4, 5, 8);
         List<UserAgent> listaUserAgents = userAgentServicio.findByAll();
         iMax = listaUserAgents.size();
         Map<Integer, Parametro> mapParametros = parametroServicio.findByIdParametrosIn(listaIdParametros);
@@ -203,7 +208,9 @@ public class ConsultarPlacaServicio {
      * @param listaPlacas
      */
     private void consumirPlacaExiste(List<Placa> listaPlacas) {
-        List<Integer> listaIdParametros = List.of(1, 2, 3);
+        //TODO
+        List<Integer> listaIdParametros = new ArrayList<>();
+        // List<Integer> listaIdParametros = List.of(1, 2, 3);
         Map<Integer, Parametro> mapParametros = parametroServicio.findByIdParametrosIn(listaIdParametros);
 
         int timeOut = mapParametros.get(3).getValor1().intValue();
