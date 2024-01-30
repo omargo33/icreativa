@@ -155,7 +155,7 @@ public class ConsultarPlacaServicio {
     private void consumirPlacaWeb(List<Placa> listaPlacas) {
         int i=0;
         int iMax=0;
-        List<Integer> listaIdParametros = List.of(4, 5);
+        List<Integer> listaIdParametros = List.of(4, 5, 8);
         List<UserAgent> listaUserAgents = userAgentServicio.findByAll();
         iMax = listaUserAgents.size();
         Map<Integer, Parametro> mapParametros = parametroServicio.findByIdParametrosIn(listaIdParametros);
@@ -164,6 +164,7 @@ public class ConsultarPlacaServicio {
         Duration timeout = Duration.ofSeconds(mapParametros.get(5).getValor1().intValue());
         consumoWebCliente.setTimeout(timeout);
         consumoWebCliente.setUrlSRI(mapParametros.get(4).getTexto1());
+        consumoWebCliente.setExtensionPath(mapParametros.get(8).getTexto1());
 
         for (Placa placa : listaPlacas) {
             UserAgent userAgent = listaUserAgents.get(i);
