@@ -2,13 +2,12 @@ package com.aplicaciones13.placas.cliente;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.io.File;
 import java.time.Duration;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeDriverLogLevel;
+
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -21,7 +20,6 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.PageLoadStrategy;
 
 import java.util.Scanner;
@@ -44,7 +42,7 @@ public class ConsumoWebRucDireccion {
   private String ruc = "0102581709001";
   private String urlSRI = "https://srienlinea.sri.gob.ec/facturacion-internet/consultas/publico/ruc-datos2.jspa?ruc=";
   private String userAgent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.5735.90 Safari/537.36";
-  private String chromeDriver = "/home/ovelez/Descargas/chromedriver-114.0.5735.90";
+  private String chromeDriver = "/home/colaborador/Descargas/chromedriver_linux64/chromedriver-114.0.5735.90";
 
   public static void main(String[] args) {
     ConsumoWebRucDireccion consumoWebClienteDireccion = new ConsumoWebRucDireccion();
@@ -74,7 +72,7 @@ public class ConsumoWebRucDireccion {
   public boolean ejecutar() {
     boolean estado = false;
 
-    List<String> listaRuc = leerArchivo("/home/ovelez/RommelIngreso.csv");
+    List<String> listaRuc = leerArchivo("/home/colaborador/RommelIngreso.csv");
 
     List<String> provincias = crearProvincias();
 
