@@ -43,8 +43,8 @@ public class ConsumoWebCliente2Captcha {
   private String urlSRI = "https://srienlinea.sri.gob.ec/sri-en-linea/SriVehiculosWeb/ConsultaValoresPagarVehiculo/Consultas/consultaRubros";
   private String userAgent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.5735.90 Safari/537.36";
   private String chromeDriver = "/home/ovelez/Descargas/chromedriver-114.0.5735.90";
-  private String extensionPath = "/home/ovelez/Descargas/Buster-Captcha-Solver-for-Humans.crx";
-
+  // private String extensionPath =
+  // "/home/ovelez/Descargas/Buster-Captcha-Solver-for-Humans.crx";
   private String apiKey = "bd7a2552ab5ad2bbd5e2f9f2e166ab24";
   private String siteKey = "6Lc6rokUAAAAAJBG2M1ZM1LIgJ85DwbSNNjYoLDk";
 
@@ -121,13 +121,15 @@ public class ConsumoWebCliente2Captcha {
       ChromeOptions options = new ChromeOptions();
       options.addArguments(listaOpciones);
       options.setPageLoadStrategy(PageLoadStrategy.EAGER);
-      options.setHeadless(true);
+      //options.setHeadless(true);
 
-      try {
-        options.addExtensions(new File(extensionPath));
-      } catch (Exception e) {
-        log.warn("No se puede cargar la extension {}", e.toString());
-      }
+      /*
+       * try {
+       * options.addExtensions(new File(extensionPath));
+       * } catch (Exception e) {
+       * log.warn("No se puede cargar la extension {}", e.toString());
+       * }
+       */
 
       driver = new ChromeDriver(options);
       driver.manage().window().setSize(new Dimension(1600, 862));
@@ -224,6 +226,8 @@ public class ConsumoWebCliente2Captcha {
         return true;
       } else {
         respuesta = "No se encontro la Marca del vehiculo";
+
+        
       }
     } catch (Exception e2) {
       respuesta = String.format("No se encontro la Marca del vehiculo %s", e2.toString());
@@ -241,27 +245,16 @@ public class ConsumoWebCliente2Captcha {
    * Cambia al frame por defecto
    */
   private void eludirReCaptcha() {
-    try {
-      driver.switchTo().frame(2);
-      Generador.generarEsperaAleatoria(900, 2000);
-      driver.findElement(By.cssSelector(".help-button-holder")).click();
-      Generador.generarEsperaAleatoria(900, 2000);
-      driver.switchTo().defaultContent();
-    } catch (Exception e) {
-      log.warn("No se puede eludir el reCaptcha {}", e.toString());
-    }
+    log.info("Captcha consultado");
+    resolverCaptcha();
   }
 
   /**
    * Metodo para resolver el captcha.
+   * revisar aca para mas informacion
+   * https://2captcha.com/p/selenium-captcha-solver
    */
-  /**
-   * 
-   * @param apiKey bd7a2552ab5ad2bbd5e2f9f2e166ab24
-   * @param urlSRI https://srienlinea.sri.gob.ec/sri-en-linea/SriVehiculosWeb/ConsultaValoresPagarVehiculo/Consultas/consultaRubros
-   * @param siteKey 6Lc6rokUAAAAAJBG2M1ZM1LIgJ85DwbSNNjYoLDk
-   */
-  private void resolverCaptcha(String apiKey, String urlSRI, String siteKey ) {
+  private void resolverCaptcha() {
     TwoCaptcha solver = new TwoCaptcha(apiKey);
 
     ReCaptcha captcha = new ReCaptcha();
@@ -270,10 +263,12 @@ public class ConsumoWebCliente2Captcha {
     captcha.setVersion("v3");
     try {
       solver.solve(captcha);
-      System.out.println("Captcha solved: " + captcha.getCode());
+      log.warn("Captcha solved: " + captcha.getCode());
     } catch (Exception e) {
-      System.out.println("Error occurred: " + e.getMessage());
+      log.error("Error occurred: " + e.getMessage());
     }
+
+    //driver. 
   }
 
   /**
