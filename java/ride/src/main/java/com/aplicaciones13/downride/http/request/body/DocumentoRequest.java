@@ -3,8 +3,6 @@ package com.aplicaciones13.downride.http.request.body;
 import lombok.Data;
 import java.util.Date;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 /**
  * Metodo para obtener los documentos autorizados
  * 

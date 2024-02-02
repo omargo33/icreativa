@@ -2,7 +2,6 @@ package com.aplicaciones13.downride.http.request.body;
 
 import java.util.Date;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.Data;
 import lombok.ToString;

@@ -2,7 +2,6 @@ package com.aplicaciones13.placas.cliente;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.io.File;
 import java.time.Duration;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -121,7 +120,7 @@ public class ConsumoWebCliente2Captcha {
       ChromeOptions options = new ChromeOptions();
       options.addArguments(listaOpciones);
       options.setPageLoadStrategy(PageLoadStrategy.EAGER);
-      //options.setHeadless(true);
+      // options.setHeadless(true);
 
       /*
        * try {
@@ -227,7 +226,6 @@ public class ConsumoWebCliente2Captcha {
       } else {
         respuesta = "No se encontro la Marca del vehiculo";
 
-        
       }
     } catch (Exception e2) {
       respuesta = String.format("No se encontro la Marca del vehiculo %s", e2.toString());
@@ -268,7 +266,7 @@ public class ConsumoWebCliente2Captcha {
       log.error("Error occurred: " + e.getMessage());
     }
 
-    //driver. 
+    // driver.
   }
 
   /**
