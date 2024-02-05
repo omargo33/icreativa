@@ -1,5 +1,6 @@
 package com.aplicaciones13.downride.servicio;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import javax.transaction.Transactional;
@@ -36,8 +37,8 @@ public class DiaServicio {
      * @param anio
      * @return
      */
-    private boolean validarFecha(String dia, String mes, String anio) {
-        int currentYear = new Date().getYear() + 1900;
+    private boolean validarFecha(String dia, String mes, String anio) {        
+        int currentYear = LocalDate.now().getYear();
 
         // Validar que el anio sea un numero
         try {

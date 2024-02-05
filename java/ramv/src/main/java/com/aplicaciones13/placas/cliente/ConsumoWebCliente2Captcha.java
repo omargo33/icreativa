@@ -2,7 +2,6 @@ package com.aplicaciones13.placas.cliente;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.io.File;
 import java.time.Duration;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -273,7 +272,8 @@ public class ConsumoWebCliente2Captcha {
     } catch (Exception e) {
       log.error("Error occurred: " + e.getMessage());
     }
-    return null;
+
+    //driver. 
   }
 
   /**
