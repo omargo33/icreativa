@@ -21,7 +21,9 @@ import com.twocaptcha.TwoCaptcha;
 import com.twocaptcha.captcha.ReCaptcha;
 
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.PageLoadStrategy;
 
 /**
@@ -31,6 +33,13 @@ import org.openqa.selenium.PageLoadStrategy;
  * @author omargo33@gmail.com
  * @since 2023-08-20
  * 
+ * 
+ *        <iframe title="reCAPTCHA" width="256" height="60" role="presentation"
+ *        name="a-kpezz94ocdfy" frameborder="0" scrolling="no" sandbox=
+ *        "allow-forms allow-popups allow-same-origin allow-scripts
+ *        allow-top-navigation allow-modals allow-popups-to-escape-sandbox
+ *        allow-storage-access-by-user-activation" src=
+ *        "https://www.google.com/recaptcha/api2/anchor?ar=1&amp;k=6Lc6rokUAAAAAJBG2M1ZM1LIgJ85DwbSNNjYoLDk&amp;co=aHR0cHM6Ly9zcmllbmxpbmVhLnNyaS5nb2IuZWM6NDQz&amp;hl=es&amp;v=MHBiAvbtvk5Wb2eTZHoP1dUd&amp;size=invisible&amp;cb=433g0swkmfne"></iframe>
  */
 @Getter
 @Setter
@@ -39,7 +48,7 @@ public class ConsumoWebCliente2Captcha {
   private WebDriver driver;
   private Duration timeout;
   private String respuesta;
-  private String placa = "I0098705";
+  private String placa = "I0101470";
   private String urlSRI = "https://srienlinea.sri.gob.ec/sri-en-linea/SriVehiculosWeb/ConsultaValoresPagarVehiculo/Consultas/consultaRubros";
   private String userAgent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.5735.90 Safari/537.36";
   private String chromeDriver = "/home/ovelez/Descargas/chromedriver-114.0.5735.90";
@@ -60,7 +69,7 @@ public class ConsumoWebCliente2Captcha {
    */
   private void ejecutarTest() {
     ConsumoWebCliente2Captcha consumoWebCliente2Captcha = new ConsumoWebCliente2Captcha();
-    consumoWebCliente2Captcha.setTimeout(Duration.ofSeconds(20));
+    consumoWebCliente2Captcha.setTimeout(Duration.ofSeconds(50));
     boolean estado = consumoWebCliente2Captcha.ejecutar();
     log.info("Estado: {}", estado);
     log.info("Respuesta: {}", consumoWebCliente2Captcha.getRespuesta());
@@ -78,7 +87,9 @@ public class ConsumoWebCliente2Captcha {
     if (configurarDriver()) {
       if (ingresarPlaca()) {
         if (presionarBotonBusqueda()) {
-          eludirReCaptcha();
+          if (isCaptchaActivated()) {
+            // eludirReCaptcha();
+          }
           estado = analizarRespuesta();
         }
       }
@@ -114,14 +125,14 @@ public class ConsumoWebCliente2Captcha {
       // listaOpciones.add("--enable-javascript");
       listaOpciones.add("--disable-popup-blocking");
       listaOpciones.add("--user-agent=" + userAgent);
-      listaOpciones.add("--no-sandbox");
+      // listaOpciones.add("--no-sandbox");
       // listaOpciones.add("--user-data-dir=/home/ovelez/.config/google-chrome");
-      // listaOpciones.add("--profile-directory=Profile 1");
+      // listaOpciones.add("--profile-directory=Default");
 
       ChromeOptions options = new ChromeOptions();
       options.addArguments(listaOpciones);
-      options.setPageLoadStrategy(PageLoadStrategy.EAGER);
-      //options.setHeadless(true);
+      options.setPageLoadStrategy(PageLoadStrategy.NORMAL);
+      // options.setHeadless(true);
 
       /*
        * try {
@@ -227,7 +238,6 @@ public class ConsumoWebCliente2Captcha {
       } else {
         respuesta = "No se encontro la Marca del vehiculo";
 
-        
       }
     } catch (Exception e2) {
       respuesta = String.format("No se encontro la Marca del vehiculo %s", e2.toString());
@@ -243,32 +253,27 @@ public class ConsumoWebCliente2Captcha {
    * busca el boton de ayuda de paso de reCaptcha
    * Pone tiempo de espera aleatorio
    * Cambia al frame por defecto
-   */
-  private void eludirReCaptcha() {
-    log.info("Captcha consultado");
-    resolverCaptcha();
-  }
-
-  /**
    * Metodo para resolver el captcha.
    * revisar aca para mas informacion
    * https://2captcha.com/p/selenium-captcha-solver
    */
-  private void resolverCaptcha() {
+  private String eludirReCaptcha() {
+    log.info("Captcha consultado");
     TwoCaptcha solver = new TwoCaptcha(apiKey);
-
     ReCaptcha captcha = new ReCaptcha();
     captcha.setSiteKey(siteKey);
     captcha.setUrl(urlSRI);
-    captcha.setVersion("v3");
     try {
       solver.solve(captcha);
-      log.warn("Captcha solved: " + captcha.getCode());
+      String codeString = captcha.getCode();
+      log.warn("Captcha solved: " + codeString);
+
+      return codeString;
+
     } catch (Exception e) {
       log.error("Error occurred: " + e.getMessage());
     }
-
-    //driver. 
+    return null;
   }
 
   /**
@@ -276,5 +281,50 @@ public class ConsumoWebCliente2Captcha {
    */
   private void tearDown() {
     driver.quit();
+  }
+
+  public boolean isCaptchaActivated() {
+    try {
+      // Encuentra el iframe de reCAPTCHA
+      WebElement iframe = driver
+          .findElement(By.cssSelector("iframe[src^='https://www.google.com/recaptcha/api2/bframe']"));
+
+      // Cambia al iframe
+      driver.switchTo().frame(iframe);
+
+      // Verifica si el reCAPTCHA de validación de imágenes está presente
+      WebElement imageCaptcha = driver.findElement(By.cssSelector(".rc-imageselect-challenge"));
+      boolean isCaptchaActivated = imageCaptcha.isDisplayed();
+
+      if (isCaptchaActivated) {
+        log.info("Captcha activado");
+        String code = eludirReCaptcha();
+        if (code == null) {
+          return false;
+        }
+
+        WebElement recaptchaResponseElement = driver.findElement(By.id("g-recaptcha-response"));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].value = '" + code + "';",
+            recaptchaResponseElement);
+
+        WebElement buttonOkCaptcha = driver.findElement(By.cssSelector("button[type='submit']"));
+        buttonOkCaptcha.click();
+
+      } else {
+        log.info("Captcha desactivado");
+      }
+
+      // Cambia de nuevo al contenido principal de la página
+      driver.switchTo().defaultContent();
+
+      // Devuelve si el reCAPTCHA está activado
+      return isCaptchaActivated;
+    } catch (NoSuchElementException e) {
+      // Si no se encuentra el iframe de reCAPTCHA o el reCAPTCHA de validación de
+      // imágenes,
+      // devuelve false
+      driver.switchTo().defaultContent();
+      return false;
+    }
   }
 }
