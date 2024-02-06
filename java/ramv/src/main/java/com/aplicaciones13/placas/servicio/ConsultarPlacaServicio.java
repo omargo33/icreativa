@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.aplicaciones13.placas.cliente.ConsumoPlaca;
 import com.aplicaciones13.placas.cliente.ConsumoWebCliente;
+import com.aplicaciones13.placas.cliente.ConsumoWebCliente2Captcha;
 import com.aplicaciones13.placas.jpa.model.Parametro;
 import com.aplicaciones13.placas.jpa.model.Placa;
 import com.aplicaciones13.placas.jpa.model.UserAgent;
@@ -38,6 +39,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ConsultarPlacaServicio {
     ConsumoPlaca consumoPlaca = new ConsumoPlaca();
     ConsumoWebCliente consumoWebCliente = new ConsumoWebCliente();
+    ConsumoWebCliente2Captcha consumoWebCliente2Captcha = new ConsumoWebCliente2Captcha();
     
     @Autowired
     ParametroServicio parametroServicio;

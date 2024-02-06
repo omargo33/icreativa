@@ -42,7 +42,7 @@ public class ConsumoWebRucDireccion {
   private String ruc = "0102581709001";
   private String urlSRI = "https://srienlinea.sri.gob.ec/facturacion-internet/consultas/publico/ruc-datos2.jspa?ruc=";
   private String userAgent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.5735.90 Safari/537.36";
-  private String chromeDriver = "/home/colaborador/Descargas/chromedriver_linux64/chromedriver-114.0.5735.90";
+  private String chromeDriver = "/home/ovelez/Descargas/chromedriver-114.0.5735.90";
 
   public static void main(String[] args) {
     ConsumoWebRucDireccion consumoWebClienteDireccion = new ConsumoWebRucDireccion();
@@ -72,7 +72,7 @@ public class ConsumoWebRucDireccion {
   public boolean ejecutar() {
     boolean estado = false;
 
-    List<String> listaRuc = leerArchivo("/home/colaborador/RommelIngreso.csv");
+    List<String> listaRuc = leerArchivo("/home/ovelez/RUC.csv");
 
     List<String> provincias = crearProvincias();
 
@@ -130,7 +130,7 @@ public class ConsumoWebRucDireccion {
       // listaOpciones.add("--enable-javascript");
       listaOpciones.add("--disable-popup-blocking");
       listaOpciones.add("--user-agent=" + userAgent);
-      listaOpciones.add("--no-sandbox");
+      // listaOpciones.add("--no-sandbox");
       // listaOpciones.add("--user-data-dir=/home/ovelez/.config/google-chrome");
       // listaOpciones.add("--profile-directory=Profile 1");
 
