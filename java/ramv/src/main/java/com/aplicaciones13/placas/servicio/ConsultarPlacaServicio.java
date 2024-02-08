@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import com.aplicaciones13.placas.cliente.ConsumoPlaca;
 import com.aplicaciones13.placas.cliente.ConsumoWebCliente;
 import com.aplicaciones13.placas.cliente.ConsumoWebCliente2Captcha;
+import com.aplicaciones13.placas.cliente.ConsumoWebClienteExtension;
+import com.aplicaciones13.placas.cliente.ConsumoWebClienteProfile;
 import com.aplicaciones13.placas.jpa.model.Parametro;
 import com.aplicaciones13.placas.jpa.model.Placa;
 import com.aplicaciones13.placas.jpa.model.UserAgent;
@@ -39,8 +41,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ConsultarPlacaServicio {
     ConsumoPlaca consumoPlaca = new ConsumoPlaca();
     ConsumoWebCliente consumoWebCliente = new ConsumoWebCliente();
-    ConsumoWebCliente2Captcha consumoWebCliente2Captcha = new ConsumoWebCliente2Captcha();
-    
+
     @Autowired
     ParametroServicio parametroServicio;
 
@@ -153,29 +154,26 @@ public class ConsultarPlacaServicio {
      * Caso contrario se crea un evento de placa con el error con P.
      * 
      * @param listaPlacas
+     * 
+     * 8 Extension
+     * 9 2Captcha
+     * 10 Profile
+     * 11 Tipo de ejecucion
      */
     private void consumirPlacaWeb(List<Placa> listaPlacas) {
         int i=0;
         int iMax=0;
-        List<Integer> listaIdParametros = List.of(4, 5, 8);
+        List<Integer> listaIdParametros = List.of(4, 5, 8, 9 , 10, 11);
         List<UserAgent> listaUserAgents = userAgentServicio.findByAll();
         iMax = listaUserAgents.size();
         Map<Integer, Parametro> mapParametros = parametroServicio.findByIdParametrosIn(listaIdParametros);
-
-
-        Duration timeout = Duration.ofSeconds(mapParametros.get(5).getValor1().intValue());
-        consumoWebCliente.setTimeout(timeout);
-        consumoWebCliente.setUrlSRI(mapParametros.get(4).getTexto1());
-        consumoWebCliente.setExtensionPath(mapParametros.get(8).getTexto1());
-
+        
         for (Placa placa : listaPlacas) {
             UserAgent userAgent = listaUserAgents.get(i);
-            consumoWebCliente.setUserAgent(userAgent.getDescripcion());
-            consumoWebCliente.setPlaca(placa.getRamvPlaca());
-
             WebClient webClient = webClientServicio.findByIdWebClient(userAgent.getIdWebClient());
 
-            consumoWebCliente.setChromeDriver(webClient.getPath());
+            consumoWebCliente.cargarParametros(Duration.ofSeconds(mapParametros.get(5).getValor1().intValue()), placa.getRamvPlaca(), mapParametros.get(4).getTexto1(),
+                    userAgent.getDescripcion(), webClient.getPath());
 
             if (consumoWebCliente.ejecutar()) {
                 placaServicio.actualizarEstado(placa.getIdPlacas(), "M");
@@ -191,6 +189,13 @@ public class ConsultarPlacaServicio {
             }
         }
     }
+
+    private void ejecutarConsumoDinamico(List<Integer> listaIdParametros){
+
+        consumoWebCliente.cargarParametros(null, null, null, null, null);
+
+    }
+ 
 
     /**
      * Metodo para consumir el servicio de consulta de placas del SRI en linea.

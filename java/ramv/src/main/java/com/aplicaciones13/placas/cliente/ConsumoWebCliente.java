@@ -40,11 +40,46 @@ public class ConsumoWebCliente {
   private String urlSRI = "https://srienlinea.sri.gob.ec/sri-en-linea/SriVehiculosWeb/ConsultaValoresPagarVehiculo/Consultas/consultaRubros";
   private String userAgent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.5735.90 Safari/537.36";
   private String chromeDriver = "/home/ovelez/Descargas/chromedriver-114.0.5735.90";
-  private String extensionPath = "/home/ovelez/Descargas/Buster-Captcha-Solver-for-Humans.crx";
 
   public static void main(String[] args) {
     ConsumoWebCliente consumoWebCliente = new ConsumoWebCliente();
-    consumoWebCliente.ejecutarTest();    
+    consumoWebCliente.ejecutarTest();
+  }
+
+  /**
+   * Metodo para cargar la lista de opciones.
+   */
+  public List<String> cargarListaOpciones() {
+    List<String> listaOpciones = new ArrayList<>();
+    listaOpciones.add("--remote-allow-origins=*");
+    listaOpciones.add("--ignore-certificate-errors");
+    listaOpciones.add("--disable-web-security");
+    listaOpciones.add("--window-size=1600,862");
+    listaOpciones.add("--disable-popup-blocking");
+    listaOpciones.add("--user-agent=" + userAgent);
+    listaOpciones.add("--no-sandbox");
+    return listaOpciones;
+  }
+
+  /**
+   * Metodo para crear el objeto con parametros.
+   * 
+   * @param timeout
+   * @param placa
+   * @param urlSRI
+   * @param userAgent
+   * @param chromeDriver
+   */
+  public void cargarParametros(
+      Duration timeout,
+      String placa,
+      String urlSRI,
+      String userAgent,
+      String chromeDriver) {
+    this.placa = placa;
+    this.urlSRI = urlSRI;
+    this.userAgent = userAgent;
+    this.chromeDriver = chromeDriver;
   }
 
   /**
@@ -52,9 +87,9 @@ public class ConsumoWebCliente {
    * 
    * Para ejecuar el proceso String[] args
    */
-  private void ejecutarTest() {
+  public void ejecutarTest() {
     ConsumoWebCliente consumoWebCliente = new ConsumoWebCliente();
-    consumoWebCliente.setTimeout(Duration.ofSeconds(20));
+    timeout = Duration.ofSeconds(20);
     boolean estado = consumoWebCliente.ejecutar();
     log.info("Estado: {}", estado);
     log.info("Respuesta: {}", consumoWebCliente.getRespuesta());
@@ -69,7 +104,7 @@ public class ConsumoWebCliente {
    */
   public boolean ejecutar() {
     boolean estado = false;
-    if (configurarDriver()) {
+    if (configurarDriver(null)) {
       if (ingresarPlaca()) {
         if (presionarBotonBusqueda()) {
           eludirReCaptcha();
@@ -94,33 +129,22 @@ public class ConsumoWebCliente {
    * Administra el tiempo de espera implicito
    * Elimina las cookies
    */
-  private boolean configurarDriver() {
+  public boolean configurarDriver(String extensionPath) {
     try {
       System.setProperty("webdriver.chrome.driver", chromeDriver);
       timeout = Duration.ofMillis(15000);
 
-      List<String> listaOpciones = new ArrayList<>();
-      listaOpciones.add("--remote-allow-origins=*");
-      listaOpciones.add("--ignore-certificate-errors");
-      // listaOpciones.add("--disk-cache-size=0");
-      listaOpciones.add("--disable-web-security");
-      listaOpciones.add("--window-size=1600,862");
-      //listaOpciones.add("--enable-javascript");
-      listaOpciones.add("--disable-popup-blocking");
-      listaOpciones.add("--user-agent=" + userAgent);
-      listaOpciones.add("--no-sandbox");
-      //listaOpciones.add("--user-data-dir=/home/ovelez/.config/google-chrome");
-      //listaOpciones.add("--profile-directory=Profile 1");
-
       ChromeOptions options = new ChromeOptions();
-      options.addArguments(listaOpciones);
+      options.addArguments(cargarListaOpciones());
       options.setPageLoadStrategy(PageLoadStrategy.EAGER);
-      options.setHeadless(true);      
+      options.setHeadless(true);
 
-      try {
-        options.addExtensions(new File(extensionPath));
-      } catch (Exception e) {
-        log.warn("No se puede cargar la extension {}", e.toString());
+      if (extensionPath != null && !extensionPath.isEmpty()) {
+        try {
+          options.addExtensions(new File(extensionPath));
+        } catch (Exception e) {
+          log.warn("No se puede cargar la extension {}", e.toString());
+        }
       }
 
       driver = new ChromeDriver(options);
@@ -140,7 +164,7 @@ public class ConsumoWebCliente {
    * 
    * @return
    */
-  private boolean ingresarPlaca() {
+  public boolean ingresarPlaca() {
     try {
       Generador.generarEsperaAleatoria(1000, 4000);
       driver.findElement(By.id("busqueda")).sendKeys(placa);
@@ -162,7 +186,7 @@ public class ConsumoWebCliente {
    * Asigna el mensaje de error y retorna false
    * 
    */
-  private boolean presionarBotonBusqueda() {
+  public boolean presionarBotonBusqueda() {
     for (int i = 0; i < 3; i++) {
       if (isBotonBusquedaObligadoClick()) {
         return true;
@@ -187,7 +211,7 @@ public class ConsumoWebCliente {
         int busqueda = texto.indexOf("Consultar");
         if (busqueda != -1) {
           WebElement yourButton = buttons.get(i);
-          if (yourButton.isEnabled()) {            
+          if (yourButton.isEnabled()) {
             yourButton.click();
             return true;
           }
@@ -206,7 +230,7 @@ public class ConsumoWebCliente {
    * 
    * @return
    */
-  private boolean analizarRespuesta() {
+  public boolean analizarRespuesta() {
     WebDriverWait wait = new WebDriverWait(driver, timeout);
     Generador.generarEsperaAleatoria(2000, 5300);
     try {
@@ -239,7 +263,7 @@ public class ConsumoWebCliente {
       driver.switchTo().frame(2);
       Generador.generarEsperaAleatoria(900, 2000);
       driver.findElement(By.cssSelector(".help-button-holder")).click();
-      Generador.generarEsperaAleatoria(900,2000);
+      Generador.generarEsperaAleatoria(900, 2000);
       driver.switchTo().defaultContent();
     } catch (Exception e) {
       log.warn("No se puede eludir el reCaptcha {}", e.toString());
@@ -249,7 +273,7 @@ public class ConsumoWebCliente {
   /**
    * Metodo para cerrar el driver.
    */
-  private void tearDown() {
+  public void tearDown() {
     driver.quit();
   }
 }

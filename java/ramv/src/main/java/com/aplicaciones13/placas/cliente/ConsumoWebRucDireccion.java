@@ -72,10 +72,11 @@ public class ConsumoWebRucDireccion {
   public boolean ejecutar() {
     boolean estado = false;
 
-    List<String> listaRuc = leerArchivo("/home/ovelez/RUC.csv");
+    List<String> listaRuc = leerArchivo("/home/ovelez/RUC01.csv");
 
     List<String> provincias = crearProvincias();
 
+    int i=0;
     if (configurarDriver()) {
       for (String ruc : listaRuc) {
         this.ruc = ruc;
@@ -87,7 +88,7 @@ public class ConsumoWebRucDireccion {
             int indiceProvincia = obtenerIndiceProvincia(provincias, respuesta);
             respuesta = respuesta.substring(indiceProvincia);
             respuesta = borrarUltimaPalabra(respuesta);
-            MainFiles.escribirLogDefault(ruc, respuesta.trim());
+            MainFiles.escribirLogDefault("" + i++, ruc, respuesta.trim());
           }
 
           // cada 50 registros esperar 1 minuto
