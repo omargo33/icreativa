@@ -69,7 +69,7 @@ public class ConsumoWebCliente2Captcha extends ConsumoWebCliente {
    * @param apiKey
    * @param siteKey
    */
-  public void cargarConsumoWebCliente2Captcha(
+  public void cargarParametros(
       Duration timeout,
       String placa,
       String urlSRI,

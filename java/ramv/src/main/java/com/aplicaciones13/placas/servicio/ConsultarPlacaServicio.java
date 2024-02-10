@@ -39,8 +39,19 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 public class ConsultarPlacaServicio {
+
+    static int BUSQUEDA_SIMPLE = 1;
+    static int BUSQUEDA_CON_EXTENSION = 2;
+    static int BUSQUEDA_CON_2CAPTCHA = 3;
+    static int BUSQUEDA_CON_PROFILE = 4;
+
+    String respuestaConsumoWebCliente = "";
+
     ConsumoPlaca consumoPlaca = new ConsumoPlaca();
     ConsumoWebCliente consumoWebCliente = new ConsumoWebCliente();
+    ConsumoWebClienteExtension consumoWebClienteExtension = new ConsumoWebClienteExtension();
+    ConsumoWebCliente2Captcha consumoWebCliente2Captcha = new ConsumoWebCliente2Captcha();
+    ConsumoWebClienteProfile consumoWebClienteProfile = new ConsumoWebClienteProfile();
 
     @Autowired
     ParametroServicio parametroServicio;
@@ -155,10 +166,6 @@ public class ConsultarPlacaServicio {
      * 
      * @param listaPlacas
      * 
-     * 8 Extension
-     * 9 2Captcha
-     * 10 Profile
-     * 11 Tipo de ejecucion
      */
     private void consumirPlacaWeb(List<Placa> listaPlacas) {
         int i=0;
@@ -171,17 +178,15 @@ public class ConsultarPlacaServicio {
         for (Placa placa : listaPlacas) {
             UserAgent userAgent = listaUserAgents.get(i);
             WebClient webClient = webClientServicio.findByIdWebClient(userAgent.getIdWebClient());
+            boolean estadoEjecucion = ejecutarConsumoDinamico(mapParametros, placa.getRamvPlaca(), userAgent.getDescripcion(), webClient.getPath());
 
-            consumoWebCliente.cargarParametros(Duration.ofSeconds(mapParametros.get(5).getValor1().intValue()), placa.getRamvPlaca(), mapParametros.get(4).getTexto1(),
-                    userAgent.getDescripcion(), webClient.getPath());
-
-            if (consumoWebCliente.ejecutar()) {
+            if (estadoEjecucion) {
                 placaServicio.actualizarEstado(placa.getIdPlacas(), "M");
                 userAgentServicio.incrementarEjecucionCorrecta(userAgent.getIdUserAgent());
-                placaEventoServicio.crearPlacaEvento(placa.getIdPlacas(), consumoWebCliente.getRespuesta(), "M");
+                placaEventoServicio.crearPlacaEvento(placa.getIdPlacas(), respuestaConsumoWebCliente, "M");
             } else {
                 userAgentServicio.incrementarEjecucionIncorrecta(userAgent.getIdUserAgent());
-                placaEventoServicio.crearPlacaEvento(placa.getIdPlacas(), consumoWebCliente.getRespuesta(), "P");
+                placaEventoServicio.crearPlacaEvento(placa.getIdPlacas(), respuestaConsumoWebCliente, "P");
             }
             i++;
             if (i==iMax) {
@@ -190,10 +195,53 @@ public class ConsultarPlacaServicio {
         }
     }
 
-    private void ejecutarConsumoDinamico(List<Integer> listaIdParametros){
+    /**
+     * Metodo para ejecutar el consumo dinamico.
+     *
+     * 8 Extension
+     * 9 2Captcha
+     * 10 Profile
+     * 11 Tipo de ejecucion
+     *
+     * 
+     * @param mapParametros
+     * @param placa
+     * @param userAgentDescripcion
+     * @param webClientPath
+     * @return
+     */
+    private boolean ejecutarConsumoDinamico(Map<Integer, Parametro> mapParametros, String placa, String userAgentDescripcion, String webClientPath){
+        boolean estado = false;
+        
+        if(mapParametros.get(11).getValor1().intValue()  == BUSQUEDA_SIMPLE){
+            consumoWebCliente.cargarParametros(Duration.ofSeconds(mapParametros.get(5).getValor1().intValue()), placa, mapParametros.get(4).getTexto1(),
+            userAgentDescripcion, webClientPath);
+            estado = consumoWebCliente.ejecutar();
+            respuestaConsumoWebCliente = consumoWebCliente.getRespuesta();
+        }
 
-        consumoWebCliente.cargarParametros(null, null, null, null, null);
+        if(mapParametros.get(11).getValor1().intValue()  == BUSQUEDA_CON_EXTENSION){
+            consumoWebClienteExtension.cargarParametros(Duration.ofSeconds(mapParametros.get(5).getValor1().intValue()), placa, mapParametros.get(4).getTexto1(),
+            userAgentDescripcion, webClientPath, mapParametros.get(8).getTexto1());
+            estado = consumoWebClienteExtension.ejecutar();
+            respuestaConsumoWebCliente = consumoWebClienteExtension.getRespuesta();
+        }
 
+        if(mapParametros.get(11).getValor1().intValue()  == BUSQUEDA_CON_2CAPTCHA){
+            consumoWebCliente2Captcha.cargarParametros(Duration.ofSeconds(mapParametros.get(5).getValor1().intValue()), placa, mapParametros.get(4).getTexto1(),
+            userAgentDescripcion, webClientPath, mapParametros.get(9).getTexto1(), mapParametros.get(9).getTexto2());
+            estado = consumoWebCliente2Captcha.ejecutar();
+            respuestaConsumoWebCliente = consumoWebCliente2Captcha.getRespuesta();
+        }
+
+        if(mapParametros.get(11).getValor1().intValue()  == BUSQUEDA_CON_PROFILE){
+            consumoWebClienteProfile.cargarParametros(Duration.ofSeconds(mapParametros.get(5).getValor1().intValue()), placa, mapParametros.get(4).getTexto1(),
+            userAgentDescripcion, webClientPath, mapParametros.get(10).getTexto1(),mapParametros.get(10).getTexto1());
+            estado = consumoWebClienteProfile.ejecutar();
+            respuestaConsumoWebCliente = consumoWebClienteProfile.getRespuesta();
+        }
+
+        return estado;        
     }
  
 
@@ -229,5 +277,5 @@ public class ConsultarPlacaServicio {
                 placaEventoServicio.crearPlacaEvento(placa.getIdPlacas(), "No Presente", "P");
             }
         }
-    }
+    }    
 }
