@@ -7,6 +7,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import lombok.Getter;
+import lombok.ToString;
+
 import org.openqa.selenium.NoSuchElementException;
 
 /**
@@ -18,6 +20,7 @@ import org.openqa.selenium.NoSuchElementException;
  * 
  */
 @Getter
+@ToString
 public class ConsumoWebClienteProfile extends ConsumoWebCliente {
   private String userPath = "/home/ovelez/.config/google-chrome/";
   private String userProfile = "Default";

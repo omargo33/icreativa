@@ -239,6 +239,7 @@ public class ConsultarPlacaServicio {
             userAgentDescripcion, webClientPath, mapParametros.get(10).getTexto1(),mapParametros.get(10).getTexto2());
             estado = consumoWebClienteProfile.ejecutar();
             respuestaConsumoWebCliente = consumoWebClienteProfile.getRespuesta();
+            log.info("Respuesta Perfil: " + respuestaConsumoWebCliente.toString());
         }
 
         return estado;        
