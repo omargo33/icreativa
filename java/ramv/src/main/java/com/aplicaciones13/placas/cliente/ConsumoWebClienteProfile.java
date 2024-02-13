@@ -8,6 +8,7 @@ import org.openqa.selenium.WebElement;
 
 import lombok.Getter;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 
 import org.openqa.selenium.NoSuchElementException;
 
@@ -21,6 +22,7 @@ import org.openqa.selenium.NoSuchElementException;
  */
 @Getter
 @ToString
+@Slf4j
 public class ConsumoWebClienteProfile extends ConsumoWebCliente {
   private String userPath = "/home/ovelez/.config/google-chrome/";
   private String userProfile = "Default";
@@ -28,6 +30,7 @@ public class ConsumoWebClienteProfile extends ConsumoWebCliente {
   public static void main(String[] args) {
     ConsumoWebClienteProfile consumoWebClienteProfile = new ConsumoWebClienteProfile();
     consumoWebClienteProfile.ejecutar();
+    log.info(consumoWebClienteProfile.toString());
   }
 
   /**

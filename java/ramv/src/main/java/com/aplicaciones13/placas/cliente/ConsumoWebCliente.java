@@ -136,8 +136,8 @@ public class ConsumoWebCliente {
 
       ChromeOptions options = new ChromeOptions();
       options.addArguments(cargarListaOpciones());
-      options.setPageLoadStrategy(PageLoadStrategy.EAGER);
-      //options.setHeadless(true);
+      options.setPageLoadStrategy(PageLoadStrategy.NORMAL);
+      options.setHeadless(true);
 
       if (extensionPath != null && !extensionPath.isEmpty()) {
         try {
