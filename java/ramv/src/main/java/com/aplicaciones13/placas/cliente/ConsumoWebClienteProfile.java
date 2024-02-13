@@ -19,12 +19,12 @@ import org.openqa.selenium.NoSuchElementException;
  */
 @Getter
 public class ConsumoWebClienteProfile extends ConsumoWebCliente {
-  private String userPath = "/home/ovelez/Descargas";
+  private String userPath = "/home/ovelez/.config/google-chrome/";
   private String userProfile = "Default";
 
   public static void main(String[] args) {
     ConsumoWebClienteProfile consumoWebClienteProfile = new ConsumoWebClienteProfile();
-    consumoWebClienteProfile.ejecutarTest();
+    consumoWebClienteProfile.ejecutar();
   }
 
   /**

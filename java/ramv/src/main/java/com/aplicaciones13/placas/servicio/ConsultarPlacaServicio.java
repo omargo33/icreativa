@@ -236,7 +236,7 @@ public class ConsultarPlacaServicio {
 
         if(mapParametros.get(11).getValor1().intValue()  == BUSQUEDA_CON_PROFILE){
             consumoWebClienteProfile.cargarParametros(Duration.ofSeconds(mapParametros.get(5).getValor1().intValue()), placa, mapParametros.get(4).getTexto1(),
-            userAgentDescripcion, webClientPath, mapParametros.get(10).getTexto1(),mapParametros.get(10).getTexto1());
+            userAgentDescripcion, webClientPath, mapParametros.get(10).getTexto1(),mapParametros.get(10).getTexto2());
             estado = consumoWebClienteProfile.ejecutar();
             respuestaConsumoWebCliente = consumoWebClienteProfile.getRespuesta();
         }

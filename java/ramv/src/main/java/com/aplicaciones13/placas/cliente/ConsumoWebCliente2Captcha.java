@@ -5,6 +5,9 @@ import java.util.List;
 import java.time.Duration;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +42,7 @@ public class ConsumoWebCliente2Captcha extends ConsumoWebCliente {
 
   public static void main(String[] args) {
     ConsumoWebCliente2Captcha consumoWebCliente2Captcha = new ConsumoWebCliente2Captcha();
-    consumoWebCliente2Captcha.ejecutarTest();
+    consumoWebCliente2Captcha.ejecutar();
   }
 
   /**
@@ -156,17 +159,45 @@ public class ConsumoWebCliente2Captcha extends ConsumoWebCliente {
       if (isCaptchaActivated) {
         log.info("Captcha activado");
         String code = eludirReCaptcha();
+        // String code = "jfsadklfj";
         if (code == null) {
           return false;
         }
 
-        WebElement recaptchaResponseElement = getDriver().findElement(By.id("g-recaptcha-response"));
-        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].value = '" + code +
-            "';",
+        // https://github.com/michaelkitas/Python-Selenium-Tutorial/tree/master
+        // https://github.com/2captcha/2captcha-java/blob/master/src/main/java/examples/ReCaptchaV2OptionsExample.java
+        getDriver().switchTo().defaultContent();
+
+        WebDriverWait wait = new WebDriverWait(getDriver(), getTimeout());
+        WebElement recaptchaResponseElement = wait
+            .until(ExpectedConditions.presenceOfElementLocated(By.id("g-recaptcha-response")));
+
+        ((JavascriptExecutor) getDriver()).executeScript(
+            "document.getElementById('g-recaptcha-response').innerHTML = " + "'" + code + "'",
             recaptchaResponseElement);
 
-        WebElement buttonOkCaptcha = getDriver().findElement(By.cssSelector("button[type='submit']"));
-        buttonOkCaptcha.click();
+
+/*             ((JavascriptExecutor) getDriver()).executeScript(
+              "document.getElementById('g-recaptcha-response').innerHTML = " + "'" + code + "'",
+              recaptchaResponseElement);
+  */
+
+            ((JavascriptExecutor) getDriver()).executeScript(
+              "arguments[0].value = '" + code + "';", 
+              recaptchaResponseElement);
+            
+
+        WebElement iframe2 = getDriver()
+            .findElement(By.cssSelector("iframe[src^='https://www.google.com/recaptcha/api2/bframe']"));
+        getDriver().switchTo().frame(iframe2);
+        
+
+        WebDriverWait wait2 = new WebDriverWait(getDriver(), getTimeout());
+
+        WebElement botonSaltar = wait2
+            .until(ExpectedConditions.visibilityOfElementLocated(By.id("recaptcha-verify-button")));
+        botonSaltar.click();
+
       } else {
         log.info("Captcha desactivado");
       }
@@ -174,6 +205,7 @@ public class ConsumoWebCliente2Captcha extends ConsumoWebCliente {
       getDriver().switchTo().defaultContent();
       return isCaptchaActivated;
     } catch (NoSuchElementException e) {
+      log.error(apiKey + "No se puede eludir el reCaptcha {}", e.toString());
       getDriver().switchTo().defaultContent();
       return false;
     }
