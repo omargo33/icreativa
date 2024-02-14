@@ -104,7 +104,8 @@ public class ConsumoWebCliente {
    */
   public boolean ejecutar() {
     boolean estado = false;
-    if (configurarDriver(null)) {
+    setRespuesta("No se encontro la Marca del vehiculo Base.");
+        if (configurarDriver(null)) {
       if (ingresarPlaca()) {
         if (presionarBotonBusqueda()) {
           eludirReCaptcha();

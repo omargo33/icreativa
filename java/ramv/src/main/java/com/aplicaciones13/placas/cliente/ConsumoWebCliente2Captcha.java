@@ -94,6 +94,7 @@ public class ConsumoWebCliente2Captcha extends ConsumoWebCliente {
    */
   public boolean ejecutar() {
     boolean estado = false;
+    setRespuesta("No se encontro la Marca del vehiculo por 2 Captcha.");
     if (configurarDriver(null)) {
       if (ingresarPlaca()) {
         if (presionarBotonBusqueda()) {

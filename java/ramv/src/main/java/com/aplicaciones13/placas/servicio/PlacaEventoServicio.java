@@ -46,7 +46,9 @@ public class PlacaEventoServicio {
      */
     public PlacaEvento crearPlacaEvento(int idPlaca, String descripcion, String estado) {
         PlacaEvento valor = new PlacaEvento();
-        descripcion = descripcion.substring(0, Math.min(descripcion.length(), 128));
+        if(descripcion.length() > 4090){
+            descripcion = descripcion.substring(0,  4090);
+        }
         valor.setDescripcion(descripcion);
         valor.setEstado(estado);
         valor.setFecha(new Date());

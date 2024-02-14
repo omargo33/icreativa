@@ -84,6 +84,7 @@ public class ConsumoWebClienteProfile extends ConsumoWebCliente {
    */
   public boolean ejecutar() {
     boolean estado = false;
+    setRespuesta("No se encontro la Marca del vehiculo por Perfil.");
     if (configurarDriver(null)) {
       if (ingresarPlaca()) {
         if (presionarBotonBusqueda()) {

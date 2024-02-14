@@ -74,7 +74,8 @@ public class ConsumoWebClienteExtension extends ConsumoWebCliente {
    */
   public boolean ejecutar() {
     boolean estado = false;
-    if (configurarDriver(extensionPath)) {
+    setRespuesta("No se encontro la Marca del vehiculo por Extension.");
+        if (configurarDriver(extensionPath)) {
       if (ingresarPlaca()) {
         if (presionarBotonBusqueda()) {
           eludirReCaptcha();
